@@ -11,12 +11,10 @@ object Part2 extends App {
   val increasingCount = depths
       .sliding(width + 1)
       .count { seq =>
-        val left = seq.take(width)
-        val right = seq.tail.take(width)
-        val leftSum = left.sum
-        val rightSum = right.sum
+        val prev = seq.head
+        val next = seq.last
 
-        leftSum < rightSum
+        prev < next
       }
 
   println(increasingCount)

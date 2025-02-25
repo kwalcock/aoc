@@ -9,7 +9,7 @@ object Part1 extends App {
       .map(_.toInt)
   val increasingCount = depths
       .sliding(2)
-      .count { case Seq(left, right) => left < right }
+      .count { case Seq(prev, next) => prev < next }
 
   println(increasingCount)
 }
