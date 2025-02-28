@@ -2,7 +2,7 @@ package com.keithalcock.aoc.year2021.day2
 
 import scala.io.Source
 
-object Part2 extends App{
+object Part2 extends App {
   val commands = Source
       .fromResource("com/keithalcock/aoc/year2021/day2/input.txt")
       .getLines
