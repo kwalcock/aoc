@@ -50,9 +50,9 @@ object GasMonitor {
       loop(gasMonitor.next(position, winChar, loseChar), position + 1, winChar, loseChar)
   }
 
-  def rateO2(gasMonitor: GasMonitor) = loop(gasMonitor, 0, GasMonitor.oneChar, GasMonitor.zeroChar)
+  def rateO2(gasMonitor: GasMonitor): Int =  loop(gasMonitor, 0, GasMonitor.oneChar, GasMonitor.zeroChar)
 
-  def rateCo2(gasMonitor: GasMonitor) = loop(gasMonitor, 0, GasMonitor.zeroChar, GasMonitor.oneChar)
+  def rateCo2(gasMonitor: GasMonitor): Int = loop(gasMonitor, 0, GasMonitor.zeroChar, GasMonitor.oneChar)
 }
 
 object Part2 extends App {
