@@ -56,13 +56,20 @@ object GasMonitor {
 }
 
 object Part2 extends App {
-  val lines = Source
-      .fromResource("com/keithalcock/aoc/year2021/day3/input.txt")
-      .getLines
-  val gasMonitor = GasMonitor(lines)
-  val o2 = GasMonitor.rateO2(gasMonitor)
-  val co2 = GasMonitor.rateCo2(gasMonitor)
-  val product = o2 * co2
 
-  println(product)
+  def run(resourceName: String): Int = {
+    val lines = Source
+        .fromResource(resourceName)
+        .getLines
+    val gasMonitor = GasMonitor(lines)
+    val o2 = GasMonitor.rateO2(gasMonitor)
+    val co2 = GasMonitor.rateCo2(gasMonitor)
+    val product = o2 * co2
+
+    product
+  }
+
+  val result = run("com/keithalcock/aoc/year2021/day3/input.txt")
+
+  println(result)
 }

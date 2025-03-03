@@ -53,13 +53,20 @@ object BitCounter {
 }
 
 object Part1 extends App {
-  val lines = Source
-      .fromResource("com/keithalcock/aoc/year2021/day3/input.txt")
-      .getLines
-  val bitCounter = BitCounter(lines)
-  val gamma = bitCounter.calcGamma
-  val epsilon = bitCounter.calcEpsilon
-  val product = gamma * epsilon
 
-  println(product)
+  def run(resourceName: String): Int = {
+    val lines = Source
+        .fromResource(resourceName)
+        .getLines
+    val bitCounter = BitCounter(lines)
+    val gamma = bitCounter.calcGamma
+    val epsilon = bitCounter.calcEpsilon
+    val product = gamma * epsilon
+
+    product
+  }
+
+  val result = run("com/keithalcock/aoc/year2021/day3/input.txt")
+
+  println(result)
 }
