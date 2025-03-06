@@ -66,6 +66,9 @@ object Bingo {
 
     bingos
   }
+}
+
+object Part1 extends App {
 
   def play(moves: Array[Int], bingos: Array[Bingo]): Int = {
 
@@ -87,9 +90,6 @@ object Bingo {
 
     winningScore
   }
-}
-
-object Part1 extends App {
 
   def run(resourceName: String): Int = {
     val lines = Source
@@ -98,7 +98,7 @@ object Part1 extends App {
         .buffered
     val moves = Bingo.readMoves(lines)
     val bingos = Bingo.readBingos(lines)
-    val winningScore = Bingo.play(moves, bingos)
+    val winningScore = play(moves, bingos)
 
     winningScore
   }
