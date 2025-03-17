@@ -27,7 +27,7 @@ class Cave(val heights: Array[Array[Int]], val width: Int) {
 
   def heightAtPoint(point: Point): Int = heights(point.y)(point.x)
 
-  def calcRisk(): Int = {
+  def findLowPoints(): Seq[Point] = {
     val points = yRange.flatMap { y =>
       xRange.map { x =>
         Point(x, y)
@@ -41,6 +41,12 @@ class Cave(val heights: Array[Array[Int]], val width: Int) {
         height < heightAtPoint(neighbor)
       }
     }
+
+    lowPoints
+  }
+
+  def calcRisk(): Int = {
+    val lowPoints = findLowPoints()
     val lowHeights = lowPoints.map(heightAtPoint)
     val risk = lowHeights.sum + lowHeights.length
 
