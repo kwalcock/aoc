@@ -2,16 +2,16 @@ package com.keithalcock.aoc.year2021.day10
 
 import scala.io.Source
 
-object Part2 extends App {
-  lazy val data = Seq(
+object Part2 {
+  val data = Seq(
     ('(', ')', 1),
     ('[', ']', 2),
     ('{', '}', 3),
     ('<', '>', 4)
   )
-  lazy val pairs = data.map { case (left, right, score) => left -> right }.toMap
-  lazy val points = data.map { case (left, right, score) => right -> score }.toMap
-  lazy val lefts = pairs.keySet
+  val pairs = data.map { case (left, right, score) => left -> right }.toMap
+  val points = data.map { case (left, right, score) => right -> score }.toMap
+  val lefts = pairs.keySet
 
   def getCompletionOpt(line: String): Option[List[Char]] = {
 
@@ -24,9 +24,8 @@ object Part2 extends App {
 
         if (lefts.contains(char))
           loop(line.tail, pairs(char) :: stack)
-        else
-          if (stack.headOption.contains(char)) loop(line.tail, stack.tail)
-          else None
+        else if (stack.headOption.contains(char)) loop(line.tail, stack.tail)
+        else None
       }
     }
 
@@ -42,10 +41,6 @@ object Part2 extends App {
   }
 
   def run(resourceName: String): Long = {
-    val lazyScores = data
-    val lazyPairs = pairs
-    val lazyPoints = points
-    val lazyLefts =lefts
     val syntaxErrorScores = Source
         .fromResource(resourceName)
         .getLines
@@ -60,8 +55,10 @@ object Part2 extends App {
 
     middleScore
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day10/input.txt")
+object Part2App extends App {
+  val result = Part2.run("com/keithalcock/aoc/year2021/day10/input.txt")
 
   println(result)
 }

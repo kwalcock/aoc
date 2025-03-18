@@ -52,7 +52,7 @@ object BitCounter {
   }
 }
 
-object Part1 extends App {
+object Part1 {
 
   def run(resourceName: String): Int = {
     val lines = Source
@@ -65,8 +65,10 @@ object Part1 extends App {
 
     product
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day3/input.txt")
+object Part1App extends App {
+  val result = Part1.run("com/keithalcock/aoc/year2021/day3/input.txt")
 
   println(result)
 }

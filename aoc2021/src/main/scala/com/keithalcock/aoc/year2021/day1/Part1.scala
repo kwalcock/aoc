@@ -2,7 +2,7 @@ package com.keithalcock.aoc.year2021.day1
 
 import scala.io.Source
 
-object Part1 extends App {
+object Part1 {
 
   def run(resourceName: String): Int = {
     val depths = Source
@@ -15,8 +15,10 @@ object Part1 extends App {
 
     increasingCount
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day1/input.txt")
+object Part1App extends App {
+  val result = Part1.run("com/keithalcock/aoc/year2021/day1/input.txt")
 
   println(result)
 }

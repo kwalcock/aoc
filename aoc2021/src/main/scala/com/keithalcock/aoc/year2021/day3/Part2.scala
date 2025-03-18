@@ -55,7 +55,7 @@ object GasMonitor {
   def rateCo2(gasMonitor: GasMonitor): Int = loop(gasMonitor, 0, GasMonitor.zeroChar, GasMonitor.oneChar)
 }
 
-object Part2 extends App {
+object Part2 {
 
   def run(resourceName: String): Int = {
     val lines = Source
@@ -68,8 +68,10 @@ object Part2 extends App {
 
     product
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day3/input.txt")
+object Part2App extends App {
+  val result = Part2.run("com/keithalcock/aoc/year2021/day3/input.txt")
 
   println(result)
 }

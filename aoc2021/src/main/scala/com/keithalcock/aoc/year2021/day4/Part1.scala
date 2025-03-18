@@ -68,7 +68,7 @@ object Bingo {
   }
 }
 
-object Part1 extends App {
+object Part1 {
 
   def play(moves: Array[Int], bingos: Array[Bingo]): Int = {
 
@@ -102,8 +102,10 @@ object Part1 extends App {
 
     winningScore
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day4/input.txt")
+object Part1App extends App {
+  val result = Part1.run("com/keithalcock/aoc/year2021/day4/input.txt")
 
   println(result)
 }

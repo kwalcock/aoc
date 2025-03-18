@@ -15,7 +15,7 @@ class DiagonalLineSegment(x1: Int, y1: Int, x2: Int, y2: Int) extends LineSegmen
   }
 }
 
-object Part2 extends App {
+object Part2 {
 
   def mkVents(lines: Iterator[String]): Vents = {
     val lineSegmentPattern = "(\\d+),(\\d+) -> (\\d+),(\\d+)".r
@@ -47,8 +47,10 @@ object Part2 extends App {
 
     overlap
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day5/input.txt")
+object Part2App extends App {
+  val result = Part2.run("com/keithalcock/aoc/year2021/day5/input.txt")
 
   println(result)
 }

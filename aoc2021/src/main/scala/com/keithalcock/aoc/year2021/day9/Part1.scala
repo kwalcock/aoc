@@ -20,8 +20,8 @@ class Cave(val heights: Array[Array[Int]], val width: Int) {
   val yRange = 0.until(length)
 
   def getNeighbors(point: Point): List[Point] = {
-    point.possibleNeighbors.filter { point =>
-      xRange.contains(point.x) && yRange.contains(point.y)
+    point.possibleNeighbors.filter { case Point(x, y) =>
+      xRange.contains(x) && yRange.contains(y)
     }
   }
 
@@ -54,7 +54,7 @@ class Cave(val heights: Array[Array[Int]], val width: Int) {
   }
 }
 
-object Part1 extends App {
+object Part1 {
 
   def mkCave(lines: Array[String]): Cave = {
     val width = lines.head.length
@@ -76,8 +76,10 @@ object Part1 extends App {
 
     risk
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day9/input.txt")
+object Part1App extends App {
+  val result = Part1.run("com/keithalcock/aoc/year2021/day9/input.txt")
 
   println(result)
 }

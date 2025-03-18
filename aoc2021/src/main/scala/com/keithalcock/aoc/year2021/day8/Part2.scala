@@ -2,19 +2,19 @@ package com.keithalcock.aoc.year2021.day8
 
 import scala.io.Source
 
-object Part2 extends App {
-  lazy val alphabet = "abcdefg"
-  lazy val displays = List(
-    "abcefg",  // 0, 6 segments
-    "cf",      // 1, 2 segments, unique
-    "acdeg",   // 2, 5 segments
-    "acdfg",   // 3, 5 segments
-    "bcdf",    // 4, 4 segments, unique
-    "abdfg",   // 5, 5 segments
-    "abdefg",  // 6, 6 segments
-    "acf",     // 7, 3 segments, unique
+object Part2 {
+  val alphabet = "abcdefg"
+  val displays = List(
+    "abcefg", // 0, 6 segments
+    "cf", // 1, 2 segments, unique
+    "acdeg", // 2, 5 segments
+    "acdfg", // 3, 5 segments
+    "bcdf", // 4, 4 segments, unique
+    "abdfg", // 5, 5 segments
+    "abdefg", // 6, 6 segments
+    "acf", // 7, 3 segments, unique
     "abcdefg", // 8, 7 segments, unique
-    "abcdfg"   // 9, 6 segments
+    "abcdfg" // 9, 6 segments
   )
 
   def solve(inputs: Seq[String], outputs: Seq[String]): Int = {
@@ -51,9 +51,6 @@ object Part2 extends App {
   }
 
   def run(resourceName: String): Int = {
-    // Make sure there are initialized when testing.
-    val lazyAlphabet = alphabet
-    val lazyDisplays = displays
     val lines = Source
         .fromResource(resourceName)
         .getLines
@@ -62,8 +59,10 @@ object Part2 extends App {
 
     sum
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day8/input.txt")
+object Part2App extends App {
+  val result = Part2.run("com/keithalcock/aoc/year2021/day8/input.txt")
 
   println(result)
 }

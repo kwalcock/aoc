@@ -2,13 +2,13 @@ package com.keithalcock.aoc.year2021.day8
 
 import scala.io.Source
 
-object Part1 extends App {
-  lazy val uniqueLengths = Set(2, 3, 4, 7)
+object Part1 {
+  val uniqueLengths = Set(2, 3, 4, 7)
 
   def count1478(lines: Seq[String]): Int = {
     val total = lines.foldLeft(0) { (subtotal, line) =>
       val lengths = line.split('|').last.split(' ').filterNot(_.isEmpty).map(_.length)
-      val count = lengths.count { length => uniqueLengths(length)}
+      val count = lengths.count { length => uniqueLengths(length) }
 
       subtotal + count
     }
@@ -17,7 +17,6 @@ object Part1 extends App {
   }
 
   def run(resourceName: String): Int = {
-    val lazyUniqueLengths = uniqueLengths
     val lines = Source
         .fromResource(resourceName)
         .getLines
@@ -26,8 +25,10 @@ object Part1 extends App {
 
     count
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day8/input.txt")
+object Part1App extends App {
+  val result = Part1.run("com/keithalcock/aoc/year2021/day8/input.txt")
 
   println(result)
 }

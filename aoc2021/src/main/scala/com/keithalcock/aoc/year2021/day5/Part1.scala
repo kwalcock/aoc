@@ -43,7 +43,7 @@ class Vents(lineSegments: Seq[LineSegment]) {
   }
 }
 
-object Part1 extends App {
+object Part1 {
 
   def mkVents(lines: Iterator[String]): Vents = {
     val lineSegmentPattern = "(\\d+),(\\d+) -> (\\d+),(\\d+)".r
@@ -72,8 +72,10 @@ object Part1 extends App {
 
     overlap
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day5/input.txt")
+object Part1App extends App {
+  val result = Part1.run("com/keithalcock/aoc/year2021/day5/input.txt")
 
   println(result)
 }

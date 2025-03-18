@@ -17,7 +17,7 @@ class Counters(values: Array[Long]) {
   }
 }
 
-object Part2 extends App {
+object Part2 {
 
   def mkCounters(line: String): Counters = {
     val maxDays = 8
@@ -44,9 +44,11 @@ object Part2 extends App {
 
     newCounters.length
   }
+}
 
+object Part2App extends App {
   val days = 256
-  val result = run("com/keithalcock/aoc/year2021/day6/input.txt", days)
+  val result = Part2.run("com/keithalcock/aoc/year2021/day6/input.txt", days)
 
   println(result)
 }

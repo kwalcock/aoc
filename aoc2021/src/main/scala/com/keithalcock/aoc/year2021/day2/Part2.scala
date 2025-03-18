@@ -2,7 +2,7 @@ package com.keithalcock.aoc.year2021.day2
 
 import scala.io.Source
 
-object Part2 extends App {
+object Part2 {
 
   def run(resourceName: String): Int = {
     val commands = Source
@@ -24,8 +24,10 @@ object Part2 extends App {
 
     product
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day2/input.txt")
+object Part2App extends App {
+  val result = Part2.run("com/keithalcock/aoc/year2021/day2/input.txt")
 
   println(result)
 }

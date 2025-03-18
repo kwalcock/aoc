@@ -36,7 +36,7 @@ class CaveWithBasins(heights: Array[Array[Int]], width: Int) extends Cave(height
   }
 }
 
-object Part2 extends App {
+object Part2 {
 
   def mkCaveWithBasins(lines: Array[String]): CaveWithBasins = {
     val width = lines.head.length
@@ -58,8 +58,10 @@ object Part2 extends App {
 
     risk
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day9/input.txt")
+object Part2App extends App {
+  val result = Part2.run("com/keithalcock/aoc/year2021/day9/input.txt")
 
   println(result)
 }

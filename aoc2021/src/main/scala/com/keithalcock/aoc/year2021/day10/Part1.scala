@@ -2,16 +2,16 @@ package com.keithalcock.aoc.year2021.day10
 
 import scala.io.Source
 
-object Part1 extends App {
-  lazy val data = Seq(
+object Part1 {
+  val data = Seq(
     ('(', ')', 3),
     ('[', ']', 57),
     ('{', '}', 1197),
     ('<', '>', 25137)
   )
-  lazy val pairs = data.map { case (left, right, score) => left -> right }.toMap
-  lazy val points = data.map { case (left, right, score) => right -> score }.toMap
-  lazy val lefts = pairs.keySet
+  val pairs = data.map { case (left, right, score) => left -> right }.toMap
+  val points = data.map { case (left, right, score) => right -> score }.toMap
+  val lefts = pairs.keySet
 
   def getIllegalOpt(line: String): Option[Char] = {
 
@@ -22,9 +22,8 @@ object Part1 extends App {
 
         if (lefts.contains(char))
           loop(line.tail, pairs(char) :: stack)
-        else
-          if (stack.headOption.contains(char)) loop(line.tail, stack.tail)
-          else Some(char)
+        else if (stack.headOption.contains(char)) loop(line.tail, stack.tail)
+        else Some(char)
       }
     }
 
@@ -34,10 +33,6 @@ object Part1 extends App {
   }
 
   def run(resourceName: String): Int = {
-    val lazyScores = data
-    val lazyPairs = pairs
-    val lazyPoints = points
-    val lazyLefts =lefts
     val syntaxErrorScore = Source
         .fromResource(resourceName)
         .getLines
@@ -48,8 +43,10 @@ object Part1 extends App {
 
     syntaxErrorScore
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day10/input.txt")
+object Part1App extends App {
+  val result = Part1.run("com/keithalcock/aoc/year2021/day10/input.txt")
 
   println(result)
 }

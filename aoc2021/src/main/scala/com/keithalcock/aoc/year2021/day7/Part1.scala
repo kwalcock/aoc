@@ -2,7 +2,7 @@ package com.keithalcock.aoc.year2021.day7
 
 import scala.io.Source
 
-object Part1 extends App {
+object Part1 {
 
   def mkPositions(line: String): Array[Int] = line.split(',').map(_.toInt)
 
@@ -29,8 +29,10 @@ object Part1 extends App {
 
     overlap
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day7/input.txt")
+object Part1App extends App {
+  val result = Part1.run("com/keithalcock/aoc/year2021/day7/input.txt")
 
   println(result)
 }

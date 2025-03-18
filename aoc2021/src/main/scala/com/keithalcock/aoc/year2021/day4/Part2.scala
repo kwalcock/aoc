@@ -2,7 +2,7 @@ package com.keithalcock.aoc.year2021.day4
 
 import scala.io.Source
 
-object Part2 extends App {
+object Part2 {
 
   def play(moves: Array[Int], bingos: Array[Bingo]): Int = {
 
@@ -11,8 +11,8 @@ object Part2 extends App {
       val move = moves.head
       val newBingos = bingos.map(_.move(move))
       val filteredNewBingos =
-          if (newBingos.length > 1) newBingos.filterNot(_.isWinner)
-          else newBingos
+        if (newBingos.length > 1) newBingos.filterNot(_.isWinner)
+        else newBingos
 
       if (filteredNewBingos.length == 1 && filteredNewBingos.head.isWinner)
         filteredNewBingos.head.score(move)
@@ -36,8 +36,10 @@ object Part2 extends App {
 
     winningScore
   }
+}
 
-  val result = run("com/keithalcock/aoc/year2021/day4/input.txt")
+object Part2App extends App {
+  val result = Part2.run("com/keithalcock/aoc/year2021/day4/input.txt")
 
   println(result)
 }

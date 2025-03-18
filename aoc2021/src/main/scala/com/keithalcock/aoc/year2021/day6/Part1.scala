@@ -17,7 +17,7 @@ class Timers(values: Array[Int]) {
   }
 }
 
-object Part1 extends App {
+object Part1 {
 
   def mkTimers(line: String): Timers = {
     val values = line.split(',').map(_.toInt)
@@ -38,9 +38,11 @@ object Part1 extends App {
 
     newTimers.length
   }
+}
 
+object Part1App extends App {
   val days = 80
-  val result = run("com/keithalcock/aoc/year2021/day6/input.txt", days)
+  val result = Part1.run("com/keithalcock/aoc/year2021/day6/input.txt", days)
 
   println(result)
 }
