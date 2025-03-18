@@ -1,5 +1,7 @@
 package com.keithalcock.aoc.year2021.day5
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
 abstract class LineSegment(val x1: Int, val y1: Int, val x2: Int, val y2: Int) {
@@ -43,7 +45,7 @@ class Vents(lineSegments: Seq[LineSegment]) {
   }
 }
 
-object Part1 {
+object Part1 extends Aoc[Int] {
 
   def mkVents(lines: Iterator[String]): Vents = {
     val lineSegmentPattern = "(\\d+),(\\d+) -> (\\d+),(\\d+)".r
@@ -63,10 +65,7 @@ object Part1 {
     new Vents(lineSegments)
   }
 
-  def run(resourceName: String): Int = {
-    val lines = Source
-        .fromResource(resourceName)
-        .getLines
+  def run(lines: Iterator[String]): Int = {
     val vents = mkVents(lines)
     val overlap = vents.getOverlap
 

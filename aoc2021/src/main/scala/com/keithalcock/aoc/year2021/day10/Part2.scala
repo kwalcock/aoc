@@ -1,8 +1,10 @@
 package com.keithalcock.aoc.year2021.day10
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
-object Part2 {
+object Part2 extends Aoc[Long] {
   val data = Seq(
     ('(', ')', 1),
     ('[', ']', 2),
@@ -40,10 +42,8 @@ object Part2 {
     }
   }
 
-  def run(resourceName: String): Long = {
-    val syntaxErrorScores = Source
-        .fromResource(resourceName)
-        .getLines
+  def run(lines: Iterator[String]): Long = {
+    val syntaxErrorScores = lines
         .toList
         .flatMap(getCompletionOpt)
         .map(scoreCompletion)

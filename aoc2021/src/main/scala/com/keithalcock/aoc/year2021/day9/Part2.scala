@@ -1,5 +1,7 @@
 package com.keithalcock.aoc.year2021.day9
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
 class CaveWithBasins(heights: Array[Array[Int]], width: Int) extends Cave(heights, width) {
@@ -36,7 +38,7 @@ class CaveWithBasins(heights: Array[Array[Int]], width: Int) extends Cave(height
   }
 }
 
-object Part2 {
+object Part2 extends Aoc[Int] {
 
   def mkCaveWithBasins(lines: Array[String]): CaveWithBasins = {
     val width = lines.head.length
@@ -48,12 +50,9 @@ object Part2 {
     new CaveWithBasins(arrays, width)
   }
 
-  def run(resourceName: String): Int = {
-    val lines = Source
-        .fromResource(resourceName)
-        .getLines
-        .toArray
-    val cave = mkCaveWithBasins(lines)
+  def run(lines: Iterator[String]): Int = {
+    val linesArray = lines.toArray
+    val cave = mkCaveWithBasins(linesArray)
     val risk = cave.calcBasinScore()
 
     risk

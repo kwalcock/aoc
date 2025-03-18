@@ -1,5 +1,7 @@
 package com.keithalcock.aoc.year2021.day4
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
 class Bingo(rows: Array[Array[Int]], cols: Array[Array[Int]]) {
@@ -68,7 +70,7 @@ object Bingo {
   }
 }
 
-object Part1 {
+object Part1 extends Aoc[Int] {
 
   def play(moves: Array[Int], bingos: Array[Bingo]): Int = {
 
@@ -91,13 +93,10 @@ object Part1 {
     winningScore
   }
 
-  def run(resourceName: String): Int = {
-    val lines = Source
-        .fromResource(resourceName)
-        .getLines
-        .buffered
-    val moves = Bingo.readMoves(lines)
-    val bingos = Bingo.readBingos(lines)
+  def run(lines: Iterator[String]): Int = {
+    val bufferedLines = lines.buffered
+    val moves = Bingo.readMoves(bufferedLines)
+    val bingos = Bingo.readBingos(bufferedLines)
     val winningScore = play(moves, bingos)
 
     winningScore

@@ -1,5 +1,7 @@
 package com.keithalcock.aoc.year2021.day3
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
 class GasMonitor(bitCount: Int, binaryValues: Array[String]) {
@@ -55,12 +57,9 @@ object GasMonitor {
   def rateCo2(gasMonitor: GasMonitor): Int = loop(gasMonitor, 0, GasMonitor.zeroChar, GasMonitor.oneChar)
 }
 
-object Part2 {
+object Part2 extends Aoc[Int] {
 
-  def run(resourceName: String): Int = {
-    val lines = Source
-        .fromResource(resourceName)
-        .getLines
+  def run(lines: Iterator[String]): Int = {
     val gasMonitor = GasMonitor(lines)
     val o2 = GasMonitor.rateO2(gasMonitor)
     val co2 = GasMonitor.rateCo2(gasMonitor)

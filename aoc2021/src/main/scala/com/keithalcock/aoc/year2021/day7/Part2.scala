@@ -1,8 +1,10 @@
 package com.keithalcock.aoc.year2021.day7
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
-object Part2 {
+object Part2 extends Aoc[Int] {
 
   def mkPositions(line: String): Array[Int] = line.split(',').map(_.toInt)
 
@@ -21,10 +23,8 @@ object Part2 {
     fuels.min
   }
 
-  def run(resourceName: String): Int = {
-    val line = Source
-        .fromResource(resourceName)
-        .getLines
+  def run(lines: Iterator[String]): Int = {
+    val line = lines
         .toList
         .head
     val positions = mkPositions(line)

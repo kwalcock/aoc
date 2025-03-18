@@ -1,8 +1,10 @@
 package com.keithalcock.aoc.year2021.day8
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
-object Part2 {
+object Part2 extends Aoc[Int] {
   val alphabet = "abcdefg"
   val displays = List(
     "abcefg", // 0, 6 segments
@@ -50,12 +52,9 @@ object Part2 {
     solutions.sum
   }
 
-  def run(resourceName: String): Int = {
-    val lines = Source
-        .fromResource(resourceName)
-        .getLines
-        .toList
-    val sum = sumSolutions(lines)
+  def run(lines: Iterator[String]): Int = {
+    val linesList = lines.toList
+    val sum = sumSolutions(linesList)
 
     sum
   }

@@ -1,4 +1,4 @@
-val scala3Version = "3.3.5"
+val scalaVersion = "2.12.20"
 
 lazy val root = (project in file("."))
   .aggregate(aoc2021)

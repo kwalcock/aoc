@@ -1,6 +1,7 @@
 package com.keithalcock.aoc.year2021.day6
 
 import scala.io.Source
+import scala.util.Using
 
 class Counters(values: Array[Long]) {
 
@@ -29,10 +30,8 @@ object Part2 {
     new Counters(counts)
   }
 
-  def run(resourceName: String, days: Int): Long = {
-    val line = Source
-        .fromResource(resourceName)
-        .getLines
+  def run(lines: Iterator[String], days: Int): Long = {
+    val line = lines
         .toList
         .head
     val counters = mkCounters(line)
@@ -43,6 +42,12 @@ object Part2 {
     }
 
     newCounters.length
+  }
+
+  def run(resourceName: String, days: Int): Long = {
+    Using.resource(Source.fromResource(resourceName)) { source =>
+      run(source.getLines, days)
+    }
   }
 }
 

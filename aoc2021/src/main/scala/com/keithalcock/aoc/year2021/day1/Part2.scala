@@ -1,14 +1,12 @@
 package com.keithalcock.aoc.year2021.day1
 
-import scala.io.Source
+import com.keithalcock.aoc.year2021.Aoc
 
-object Part2 {
+object Part2 extends Aoc[Int] {
 
-  def run(resourceName: String): Int = {
+  def run(lines: Iterator[String]): Int = {
     val width = 3
-    val depths = Source
-        .fromResource(resourceName)
-        .getLines
+    val depths = lines
         .map(_.toInt)
     val increasingCount = depths
         .sliding(width + 1)

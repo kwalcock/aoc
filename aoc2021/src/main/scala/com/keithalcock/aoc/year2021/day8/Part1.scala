@@ -1,8 +1,10 @@
 package com.keithalcock.aoc.year2021.day8
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
-object Part1 {
+object Part1 extends Aoc[Int] {
   val uniqueLengths = Set(2, 3, 4, 7)
 
   def count1478(lines: Seq[String]): Int = {
@@ -16,12 +18,9 @@ object Part1 {
     total
   }
 
-  def run(resourceName: String): Int = {
-    val lines = Source
-        .fromResource(resourceName)
-        .getLines
-        .toList
-    val count = count1478(lines)
+  def run(lines: Iterator[String]): Int = {
+    val linesList = lines.toList
+    val count = count1478(linesList)
 
     count
   }

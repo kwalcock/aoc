@@ -2,6 +2,7 @@ package com.keithalcock.aoc.year2021.day11
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
+import scala.util.Using
 
 case class Point(x: Int, y: Int) {
 
@@ -88,23 +89,14 @@ class Grid(energyLevels: Array[Array[Int]]) {
 
 object Part1 {
 
-  def mkGrid(resourceName: String): Grid = {
-    val lines = Source
-        .fromResource(resourceName)
-        .getLines
-        .toList
-    val grid = mkGrid(lines)
-
-    grid
-  }
-
-  def mkGrid(lines: Seq[String]): Grid = {
-    val grid = lines.map { line =>
-        line.map(_.toString.toInt).toArray
+  def mkGrid(lines: Iterator[String]): Grid = {
+    val linesList = lines.toList
+    val grid = linesList.map { line =>
+      line.map(_.toString.toInt).toArray
     }.toArray
 
-    val width = lines.head.length
-    val height = lines.length
+    val width = linesList.head.length
+    val height = linesList.length
 
     require(width == height)
     grid.foreach { line =>
@@ -113,7 +105,20 @@ object Part1 {
     new Grid(grid)
   }
 
-  def run(resourceName: String, count: Int): Int = {
+  def mkGrid(source: Source): Grid = {
+    val lines = source.getLines
+    val grid = mkGrid(lines)
+
+    grid
+  }
+
+  def mkGrid(resourceName: String): Grid = {
+    Using.resource(Source.fromResource(resourceName)) { source =>
+      mkGrid(source)
+    }
+  }
+
+  def run(resourceName: String, count: Int): Long = {
     val grid = mkGrid(resourceName)
     val flashCount = 0.until(count).map(_ => grid.step).sum
 

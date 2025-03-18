@@ -1,9 +1,13 @@
 package com.keithalcock.aoc.year2021.day11
 
-object Part2 {
+import com.keithalcock.aoc.year2021.Aoc
 
-  def run(resourceName: String): Int = {
-    val grid = Part1.mkGrid(resourceName)
+import scala.io.Source
+
+object Part2 extends Aoc[Int] {
+
+  def run(lines: Iterator[String]): Int = {
+    val grid = Part1.mkGrid(lines)
     val size = grid.dim * grid.dim
 
     @annotation.tailrec

@@ -1,6 +1,7 @@
 package com.keithalcock.aoc.year2021.day6
 
 import scala.io.Source
+import scala.util.Using
 
 class Timers(values: Array[Int]) {
   val newArray = Array(6, 8)
@@ -25,10 +26,8 @@ object Part1 {
     new Timers(values)
   }
 
-  def run(resourceName: String, days: Int): Int = {
-    val line = Source
-        .fromResource(resourceName)
-        .getLines
+  def run(lines: Iterator[String], days: Int): Int = {
+    val line = lines
         .toList
         .head
     val timers = mkTimers(line)
@@ -37,6 +36,12 @@ object Part1 {
     }
 
     newTimers.length
+  }
+
+  def run(resourceName: String, days: Int): Int = {
+    Using.resource(Source.fromResource(resourceName)) { source =>
+      run(source.getLines, days)
+    }
   }
 }
 

@@ -1,5 +1,7 @@
 package com.keithalcock.aoc.year2021.day9
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
 case class Point(x: Int, y: Int) {
@@ -54,7 +56,7 @@ class Cave(val heights: Array[Array[Int]], val width: Int) {
   }
 }
 
-object Part1 {
+object Part1 extends Aoc[Int] {
 
   def mkCave(lines: Array[String]): Cave = {
     val width = lines.head.length
@@ -66,12 +68,9 @@ object Part1 {
     new Cave(arrays, width)
   }
 
-  def run(resourceName: String): Int = {
-    val lines = Source
-        .fromResource(resourceName)
-        .getLines
-        .toArray
-    val cave = mkCave(lines)
+  def run(lines: Iterator[String]): Int = {
+    val linesArray = lines.toArray
+    val cave = mkCave(linesArray)
     val risk = cave.calcRisk()
 
     risk

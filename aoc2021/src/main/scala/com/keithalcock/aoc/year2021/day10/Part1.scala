@@ -1,8 +1,10 @@
 package com.keithalcock.aoc.year2021.day10
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
-object Part1 {
+object Part1 extends Aoc[Int] {
   val data = Seq(
     ('(', ')', 3),
     ('[', ']', 57),
@@ -32,10 +34,8 @@ object Part1 {
     illegalOpt
   }
 
-  def run(resourceName: String): Int = {
-    val syntaxErrorScore = Source
-        .fromResource(resourceName)
-        .getLines
+  def run(lines: Iterator[String]): Int = {
+    val syntaxErrorScore = lines
         .toList
         .flatMap(getIllegalOpt)
         .map(points)

@@ -1,5 +1,7 @@
 package com.keithalcock.aoc.year2021.day3
 
+import com.keithalcock.aoc.year2021.Aoc
+
 import scala.io.Source
 
 class BitCounter(bitCount: Int) {
@@ -52,12 +54,9 @@ object BitCounter {
   }
 }
 
-object Part1 {
+object Part1 extends Aoc[Int]{
 
-  def run(resourceName: String): Int = {
-    val lines = Source
-        .fromResource(resourceName)
-        .getLines
+  def run(lines: Iterator[String]): Int = {
     val bitCounter = BitCounter(lines)
     val gamma = bitCounter.calcGamma
     val epsilon = bitCounter.calcEpsilon

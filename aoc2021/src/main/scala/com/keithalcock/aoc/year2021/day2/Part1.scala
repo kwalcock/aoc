@@ -1,13 +1,11 @@
 package com.keithalcock.aoc.year2021.day2
 
-import scala.io.Source
+import com.keithalcock.aoc.year2021.Aoc
 
-object Part1 {
+object Part1 extends Aoc[Int] {
 
-  def run(resourceName: String): Int = {
-    val commands = Source
-        .fromResource(resourceName)
-        .getLines
+  def run(lines: Iterator[String]): Int = {
+    val commands = lines
         .map { command =>
           val Array(direction, distance) = command.split(' ')
 
