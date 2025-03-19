@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day8
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 object Part1 extends Aoc[Int] {
   val uniqueLengths = Set(2, 3, 4, 7)
 

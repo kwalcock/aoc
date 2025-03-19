@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day4
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 class Bingo(rows: Array[Array[Int]], cols: Array[Array[Int]]) {
 
   def move(value: Int): Bingo = {

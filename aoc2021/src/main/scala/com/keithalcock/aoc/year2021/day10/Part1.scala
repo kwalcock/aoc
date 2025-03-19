@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day10
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 object Part1 extends Aoc[Int] {
   val data = Seq(
     ('(', ')', 3),

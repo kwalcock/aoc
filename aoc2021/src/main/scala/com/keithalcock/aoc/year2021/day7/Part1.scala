@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day7
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 object Part1 extends Aoc[Int] {
 
   def mkPositions(line: String): Array[Int] = line.split(',').map(_.toInt)

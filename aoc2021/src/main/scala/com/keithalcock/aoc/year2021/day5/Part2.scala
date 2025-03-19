@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day5
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 class DiagonalLineSegment(x1: Int, y1: Int, x2: Int, y2: Int) extends LineSegment(x1, y1, x2, y2) {
 
   def draw(array: Array[Array[Int]]): Unit = {

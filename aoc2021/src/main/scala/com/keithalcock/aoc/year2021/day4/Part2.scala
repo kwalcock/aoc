@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day4
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 object Part2 extends Aoc[Int] {
 
   def play(moves: Array[Int], bingos: Array[Bingo]): Int = {

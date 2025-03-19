@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day5
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 abstract class LineSegment(val x1: Int, val y1: Int, val x2: Int, val y2: Int) {
   def draw(array: Array[Array[Int]]): Unit
 }

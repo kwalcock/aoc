@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day3
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 class BitCounter(bitCount: Int) {
   import BitCounter._
 

@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day9
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 case class Point(x: Int, y: Int) {
 
   def possibleNeighbors: List[Point] = {

@@ -2,8 +2,6 @@ package com.keithalcock.aoc.year2021.day9
 
 import com.keithalcock.aoc.year2021.Aoc
 
-import scala.io.Source
-
 class CaveWithBasins(heights: Array[Array[Int]], width: Int) extends Cave(heights, width) {
 
   def calcBasinSize(point: Point): Int = {
