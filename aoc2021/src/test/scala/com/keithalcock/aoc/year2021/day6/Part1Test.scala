@@ -11,7 +11,7 @@ class Part1Test extends Test {
     val expectedResult = 26
     val actualResult = Part1.run("com/keithalcock/aoc/year2021/day6/test.txt", days)
 
-    expectedResult should be (actualResult)
+    actualResult should be (expectedResult)
   }
 
   it should "behave for 26 days" in {
@@ -19,6 +19,6 @@ class Part1Test extends Test {
     val expectedResult = 5934
     val actualResult = Part1.run("com/keithalcock/aoc/year2021/day6/test.txt", days)
 
-    expectedResult should be (actualResult)
+    actualResult should be (expectedResult)
   }
 }

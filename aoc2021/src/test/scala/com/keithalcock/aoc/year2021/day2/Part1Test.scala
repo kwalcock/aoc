@@ -10,6 +10,6 @@ class Part1Test extends Test {
     val expectedResult = 150
     val actualResult = Part1.run("com/keithalcock/aoc/year2021/day2/test.txt")
 
-    expectedResult should be (actualResult)
+    actualResult should be (expectedResult)
   }
 }

@@ -15,7 +15,7 @@ class Part1Test extends Test {
     val expectedResult = 1656
     val actualResult = Part1.run("com/keithalcock/aoc/year2021/day11/test.txt", 100)
 
-    expectedResult should be (actualResult)
+    actualResult should be (expectedResult)
   }
 
   it should "get the correct intermediate values" in {
