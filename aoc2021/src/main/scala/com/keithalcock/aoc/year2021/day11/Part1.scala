@@ -1,15 +1,17 @@
 package com.keithalcock.aoc.year2021.day11
 
+import com.keithalcock.aoc.year2021.utils.BasePoint
+
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import scala.util.Using
 
-case class Point(x: Int, y: Int) {
+case class PointWithNeighbors(x: Int, y: Int) extends BasePoint {
 
-  def possibleNeighbors: Seq[Point] = {
+  def possibleNeighbors: Seq[PointWithNeighbors] = {
     -1.to(1).flatMap { dy =>
       -1.to(1).flatMap { dx =>
-        if (dx != 0 || dy != 0) Some(Point(x + dx, y + dy))
+        if (dx != 0 || dy != 0) Some(PointWithNeighbors(x + dx, y + dy))
         else None
       }
     }
@@ -31,7 +33,7 @@ class Grid(energyLevels: Array[Array[Int]]) {
       dim == thatGrid.dim && {
         range.forall { y =>
           range.forall { x =>
-            val point = Point(x, y)
+            val point = PointWithNeighbors(x, y)
 
             getEnergyLevel(point) == thatGrid.getEnergyLevel(point)
           }
@@ -40,24 +42,24 @@ class Grid(energyLevels: Array[Array[Int]]) {
     }
   }
 
-  def getEnergyLevel(point: Point): Int = energyLevels(point.y)(point.x)
+  def getEnergyLevel(point: PointWithNeighbors): Int = energyLevels(point.y)(point.x)
 
-  def setEnergyLevel(point: Point, value: Int): Int = {
+  def setEnergyLevel(point: PointWithNeighbors, value: Int): Int = {
     energyLevels(point.y)(point.x) = value
     value
   }
 
-  def incEnergyLevel(point: Point): Int = setEnergyLevel(point, getEnergyLevel(point) + 1)
+  def incEnergyLevel(point: PointWithNeighbors): Int = setEnergyLevel(point, getEnergyLevel(point) + 1)
 
-  def resetEnergyLevel(point: Point): Int = setEnergyLevel(point, 0)
+  def resetEnergyLevel(point: PointWithNeighbors): Int = setEnergyLevel(point, 0)
 
   def step: Int = {
-    val toFlash: ArrayBuffer[Point] = ArrayBuffer.empty
-    val flashed: ArrayBuffer[Point] = ArrayBuffer.empty
+    val toFlash: ArrayBuffer[PointWithNeighbors] = ArrayBuffer.empty
+    val flashed: ArrayBuffer[PointWithNeighbors] = ArrayBuffer.empty
 
     range.foreach { y =>
       range.foreach { x =>
-        val point = Point(x, y)
+        val point = PointWithNeighbors(x, y)
 
         if (incEnergyLevel(point) == 10)
           toFlash += point
@@ -65,7 +67,7 @@ class Grid(energyLevels: Array[Array[Int]]) {
     }
 
     @annotation.tailrec
-    def loop(toFlash: ArrayBuffer[Point]): Unit = {
+    def loop(toFlash: ArrayBuffer[PointWithNeighbors]): Unit = {
       if (toFlash.nonEmpty) {
         val point = toFlash.head
         val neighbors = point.possibleNeighbors.filter(_.isValid(range))

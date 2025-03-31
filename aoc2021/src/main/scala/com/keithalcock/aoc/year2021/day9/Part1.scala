@@ -1,15 +1,16 @@
 package com.keithalcock.aoc.year2021.day9
 
 import com.keithalcock.aoc.year2021.Aoc
+import com.keithalcock.aoc.year2021.utils.BasePoint
 
-case class Point(x: Int, y: Int) {
+case class PointWithNeighbors(x: Int, y: Int) extends BasePoint {
 
-  def possibleNeighbors: List[Point] = {
+  def possibleNeighbors: List[PointWithNeighbors] = {
     List(
-      Point(x - 1, y + 0),
-      Point(x + 1, y + 0),
-      Point(x + 0, y - 1),
-      Point(x + 0, y + 1)
+      PointWithNeighbors(x - 1, y + 0),
+      PointWithNeighbors(x + 1, y + 0),
+      PointWithNeighbors(x + 0, y - 1),
+      PointWithNeighbors(x + 0, y + 1)
     )
   }
 }
@@ -19,18 +20,18 @@ class Cave(val heights: Array[Array[Int]], val width: Int) {
   val xRange = 0.until(width)
   val yRange = 0.until(length)
 
-  def getNeighbors(point: Point): List[Point] = {
-    point.possibleNeighbors.filter { case Point(x, y) =>
+  def getNeighbors(point: PointWithNeighbors): List[PointWithNeighbors] = {
+    point.possibleNeighbors.filter { case PointWithNeighbors(x, y) =>
       xRange.contains(x) && yRange.contains(y)
     }
   }
 
-  def heightAtPoint(point: Point): Int = heights(point.y)(point.x)
+  def heightAtPoint(point: PointWithNeighbors): Int = heights(point.y)(point.x)
 
-  def findLowPoints(): Seq[Point] = {
+  def findLowPoints(): Seq[PointWithNeighbors] = {
     val points = yRange.flatMap { y =>
       xRange.map { x =>
-        Point(x, y)
+        PointWithNeighbors(x, y)
       }
     }
     val lowPoints = points.filter { point =>

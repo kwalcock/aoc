@@ -1,8 +1,7 @@
 package com.keithalcock.aoc.year2021.day13
 
 import com.keithalcock.aoc.year2021.Aoc
-
-case class Point(x: Int, y: Int)
+import com.keithalcock.aoc.year2021.utils.Point
 
 sealed trait Fold {
   def apply(point: Point): Point
