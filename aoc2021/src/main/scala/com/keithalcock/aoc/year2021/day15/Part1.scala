@@ -5,11 +5,10 @@ import com.keithalcock.aoc.year2021.utils.Point
 
 import scala.collection.mutable.PriorityQueue
 
-class Cell(val point: Point, deltaCost: Int) {
+case class Cell(point: Point, deltaCost: Int) {
   var neighbors: List[Cell] = List.empty
   var bestSourceOpt: Option[Cell] = None
   var lowestCostOpt: Option[Int] = None
-  var visited: Boolean = false
 
   override def equals(other: Any): Boolean = {
     point == other.asInstanceOf[Cell].point
@@ -71,7 +70,7 @@ object Part1 extends Aoc[Int] {
     }
 
     val cells = Array.tabulate(xDim, yDim) { (x, y) =>
-      new Cell(Point(x, y), array(y)(x))
+      Cell(Point(x, y), array(y)(x))
     }
     val flattenedCells = 0.until(yDim).flatMap { y =>
       0.until(xDim).map { x =>
