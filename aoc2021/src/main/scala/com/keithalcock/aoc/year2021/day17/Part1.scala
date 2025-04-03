@@ -30,8 +30,7 @@ object Part1 {
 
   def run(targetX: Range, targetY: Range, xVelocity: Int, yVelocity: Int): Option[Int] = {
     val movingPoint = MovingPoint(Point(0, 0), xVelocity, yVelocity)
-    val iterator = new MovingPointIterator(targetX, targetY, movingPoint)
-    val points = iterator.toArray
+    val points = new MovingPointIterator(targetX, targetY, movingPoint).toArray
     val bullseye = points.exists { point =>
       targetX.contains(point.x) && targetY.contains(point.y)
     }
