@@ -7,6 +7,7 @@ import scala.collection.mutable.ArrayBuffer
 abstract class Packet(val length: Int, val version: Int, val typeId: Int) {
 
   def versionSum: Int
+  def evaluate: Long
 }
 
 object Packet {
@@ -45,6 +46,8 @@ object Packet {
 class LiteralValue(length: Int, version: Int, typeId: Int, val value: Long) extends Packet(length, version, typeId) {
 
   def versionSum: Int = version
+
+  def evaluate: Long = value
 }
 
 object LiteralValue {
@@ -70,12 +73,64 @@ object LiteralValue {
   }
 }
 
-class Operator(length: Int, version: Int, typeId: Int, val children: Seq[Packet]) extends Packet(length, version, typeId) {
+abstract class Operator(length: Int, version: Int, typeId: Int, children: Seq[Packet]) extends Packet(length, version, typeId) {
 
   def versionSum: Int = version + children.map(_.versionSum).sum
 }
 
+class SumOperator(length: Int, version: Int, typeId: Int, children: Seq[Packet]) extends Operator(length, version, typeId, children) {
+
+  def evaluate: Long = children.map(_.evaluate).sum
+}
+
+class ProductOperator(length: Int, version: Int, typeId: Int, children: Seq[Packet]) extends Operator(length, version, typeId, children) {
+
+  def evaluate: Long = children.map(_.evaluate).product
+}
+
+class MinOperator(length: Int, version: Int, typeId: Int, children: Seq[Packet]) extends Operator(length, version, typeId, children) {
+
+  def evaluate: Long = children.map(_.evaluate).min
+}
+
+class MaxOperator(length: Int, version: Int, typeId: Int, children: Seq[Packet]) extends Operator(length, version, typeId, children) {
+
+  def evaluate: Long = children.map(_.evaluate).max
+}
+
+class GreaterThanOperator(length: Int, version: Int, typeId: Int, val children: Seq[Packet]) extends Operator(length, version, typeId, children) {
+  require(children.length == 2)
+
+  def evaluate: Long = if (children.head.evaluate > children.last.evaluate) 1 else 0
+}
+
+class LessThanOperator(length: Int, version: Int, typeId: Int, val children: Seq[Packet]) extends Operator(length, version, typeId, children) {
+  require(children.length == 2)
+
+  def evaluate: Long = if (children.head.evaluate < children.last.evaluate) 1 else 0
+}
+
+class EqualToOperator(length: Int, version: Int, typeId: Int, val children: Seq[Packet]) extends Operator(length, version, typeId, children) {
+  require(children.length == 2)
+
+  def evaluate: Long = if (children.head.evaluate == children.last.evaluate) 1 else 0
+}
+
 object Operator {
+
+  def apply(length: Int, version: Int, typeId: Int, children: Seq[Packet]): Operator = {
+    typeId match {
+      case 0 => new SumOperator(length, version, typeId, children)
+      case 1 => new ProductOperator(length, version, typeId, children)
+      case 2 => new MinOperator(length, version, typeId, children)
+      case 3 => new MaxOperator(length, version, typeId, children)
+      case 4 => ???
+      case 5 => new GreaterThanOperator(length, version, typeId, children)
+      case 6 => new LessThanOperator(length, version, typeId, children)
+      case 7 => new EqualToOperator(length, version, typeId, children)
+      case _ => ???
+    }
+  }
 
   def apply(length: Int, version: Int, typeId: Int, bits: Iterator[Packet.Bit]): Operator = {
     val lengthTypeId = Packet.takeNext(bits, 1).head
@@ -94,7 +149,7 @@ object Operator {
         remainingLength -= packet.length
       }
 
-      new Operator(length + additionalLength + operatorLength, version, typeId, children)
+      apply(length + additionalLength + operatorLength, version, typeId, children)
     }
     else {
       val size = 11
@@ -105,7 +160,7 @@ object Operator {
       }
       val operatorLength = children.map(_.length).sum
 
-      new Operator(length + additionalLength + operatorLength, version, typeId, children)
+      apply(length + additionalLength + operatorLength, version, typeId, children)
     }
   }
 }
@@ -129,8 +184,8 @@ object Part1 extends Aoc[Int] {
     bits
   }
 
-  def run(lines: Iterator[String]): Int = {
-    val bits = toBits(lines.next)
+  def runString(string: String): Int = {
+    val bits = toBits(string)
     // val bits = toBits("D2FE28")
     // val bits = toBits("38006F45291200")
     // val bits = toBits("EE00D40C823060")
@@ -138,6 +193,10 @@ object Part1 extends Aoc[Int] {
     val versionSum = packet.versionSum
 
     versionSum
+  }
+
+  def run(lines: Iterator[String]): Int = {
+    run(lines.next())
   }
 }
 
