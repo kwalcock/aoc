@@ -77,16 +77,12 @@ class DoubleSnailfish(var left: Snailfish, var right: Snailfish) extends Snailfi
     stringBuffer.toString
   }
 
-  def bothSingle: Boolean = left.isInstanceOf[SingleSnailfish] && right.isInstanceOf[SingleSnailfish]
-
   def addLeftRight(value: Int): Boolean = {
-    /*if (bothSingle) false
-    else*/ left.addLeftRight(value) || right.addLeftRight(value)
+    left.addLeftRight(value) || right.addLeftRight(value)
   }
 
   def addRightLeft(value: Int): Boolean = {
-    /*if (bothSingle) false
-    else*/ right.addRightLeft(value) || left.addRightLeft(value)
+    right.addRightLeft(value) || left.addRightLeft(value)
   }
 
   def explode(doubleSnailfish: DoubleSnailfish): SingleSnailfish = {
