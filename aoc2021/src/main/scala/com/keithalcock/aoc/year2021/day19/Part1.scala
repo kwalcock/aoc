@@ -9,6 +9,12 @@ case class Point3d(x: Int, y: Int, z: Int) {
   def add(point: Point3d): Point3d = Point3d(x + point.x, y + point.y, z + point.z)
 
   def sub(point: Point3d): Point3d = Point3d(x - point.x, y - point.y, z - point.z)
+
+  def manhattanDistance(point: Point3d): Int = {
+    val difference = this.sub(point)
+
+    math.abs(difference.x) + math.abs(difference.y) + math.abs(difference.z)
+  }
 }
 
 object Point3d {
@@ -74,7 +80,7 @@ class DisorientedScanner(beacons: Set[Beacon]) extends Scanner(beacons) {
 
 case class SearchResult(orientation: Orientation.Orientation, translation: Point3d, disorientedScanner: DisorientedScanner, orientedScanner: OrientedScanner)
 
-class OrientedScanner(point: Point3d, orientation: Part1.Orientation, beacons: Set[Beacon]) extends Scanner(beacons) {
+class OrientedScanner(val point: Point3d, orientation: Part1.Orientation, beacons: Set[Beacon]) extends Scanner(beacons) {
 
   def orient(point: Point3d): OrientedScanner = {
     val newBeacons = beacons.map { beacon =>
@@ -214,7 +220,7 @@ object Part1 extends Aoc[Int] {
     }
   }
 
-  def run(lines: Iterator[String]): Int = {
+  def mkOrientedScanners(lines: Iterator[String]): Seq[OrientedScanner] = {
     var (orientedScanners, disorientedScanners) = {
       val disorientedScanners = mkDisorientedScanners(lines)
       val orientedScanner = disorientedScanners.head.orient(orientations.head)
@@ -229,6 +235,11 @@ object Part1 extends Aoc[Int] {
       disorientedScanners = newDisorientedScanners
     }
 
+    orientedScanners
+  }
+
+  def run(lines: Iterator[String]): Int = {
+    val orientedScanners = mkOrientedScanners(lines)
     val beacons = orientedScanners.flatMap(_.beacons).toSet
 
     beacons.size
