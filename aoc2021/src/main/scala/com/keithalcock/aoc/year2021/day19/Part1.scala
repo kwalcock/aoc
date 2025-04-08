@@ -7,6 +7,8 @@ import scala.collection.mutable.ArrayBuffer
 case class Point3d(x: Int, y: Int, z: Int) {
 
   def add(point: Point3d): Point3d = Point3d(x + point.x, y + point.y, z + point.z)
+
+  def sub(point: Point3d): Point3d = Point3d(x - point.x, y - point.y, z - point.z)
 }
 
 object Point3d {
@@ -57,17 +59,7 @@ object Orientation {
 
 case class Beacon(point: Point3d)
 
-class Scanner(val beacons: Set[Beacon]) {
-
-  def mkRange(values: Set[Int]): Range = {
-    Range.inclusive(values.min, values.max)
-  }
-
-  val xRange = mkRange(beacons.map(_.point.x))
-  val yRange = mkRange(beacons.map(_.point.y))
-  val zRange = mkRange(beacons.map(_.point.z))
-
-}
+class Scanner(val beacons: Set[Beacon])
 
 class DisorientedScanner(beacons: Set[Beacon]) extends Scanner(beacons) {
 
@@ -94,10 +86,6 @@ class OrientedScanner(point: Point3d, orientation: Part1.Orientation, beacons: S
 
   def orient(disorientedScanner: DisorientedScanner): Option[OrientedScanner] = {
 
-    def translationRange(thisRange: Range, thatRange: Range): Range = {
-      Range.inclusive(thisRange.min - thatRange.max, thisRange.max - thatRange.min)
-    }
-
     def overlaps(orientedScanner: OrientedScanner): Boolean = {
       val intersection = beacons.intersect(orientedScanner.beacons)
 
@@ -106,25 +94,24 @@ class OrientedScanner(point: Point3d, orientation: Part1.Orientation, beacons: S
 
     val searchResults = Orientation.orientations.flatMap { orientation =>
       val partiallyOrientedScanner = disorientedScanner.orient(orientation)
-      val translationXRange = translationRange(this.xRange, partiallyOrientedScanner.xRange)
-      val translationYRange = translationRange(this.yRange, partiallyOrientedScanner.yRange)
-      val translationZRange = translationRange(this.zRange, partiallyOrientedScanner.zRange)
-
-      translationXRange.flatMap { translationX =>
-        translationYRange.flatMap { translationY =>
-          translationZRange.flatMap { translationZ =>
-            val translationPoint = Point3d(translationX, translationY, translationZ)
-            val fullyOrientedScanner = partiallyOrientedScanner.orient(translationPoint)
-
-            if (overlaps(fullyOrientedScanner))
-              Some(SearchResult(orientation, translationPoint, disorientedScanner, fullyOrientedScanner))
-            else None
-          }
+      val translationPoints = beacons.flatMap { orientedBeacon =>
+        partiallyOrientedScanner.beacons.map { partiallyOrientedBeacon =>
+          orientedBeacon.point.sub(partiallyOrientedBeacon.point)
         }
+      }
+
+      translationPoints.flatMap { translationPoint =>
+        val fullyOrientedScanner = partiallyOrientedScanner.orient(translationPoint)
+
+        if (overlaps(fullyOrientedScanner))
+          Some(SearchResult(orientation, translationPoint, disorientedScanner, fullyOrientedScanner))
+        else None
       }
     }
 
     if (searchResults.size == 1)
+      Some(searchResults.head.orientedScanner)
+    else if (searchResults.size > 1)
       Some(searchResults.head.orientedScanner)
     else
       None
@@ -202,25 +189,28 @@ object Part1 extends Aoc[Int] {
   }
 
   def orient(orientedScanners: Seq[OrientedScanner], disorientedScanners: Seq[DisorientedScanner]): (Seq[OrientedScanner], Seq[DisorientedScanner]) = {
-    val pairs = orientedScanners.flatMap { orientedScanner =>
-      disorientedScanners.map { disorientedScanner =>
-        (orientedScanner, disorientedScanner)
+    var firstNewPairOpt: Option[(DisorientedScanner, OrientedScanner)] = None
+
+    orientedScanners.foreach { orientedScanner =>
+      disorientedScanners.foreach { disorientedScanner =>
+        firstNewPairOpt =
+            if (firstNewPairOpt.isDefined) firstNewPairOpt
+            else {
+              val newOrientedScannerOpt = orientedScanner.orient(disorientedScanner)
+
+              newOrientedScannerOpt.map((disorientedScanner, _))
+            }
       }
     }
-    val pairOpt = pairs.find { case (orientedScanner, disorientedScanner) =>
-      orientedScanner.orient(disorientedScanner).isDefined
-    }
 
-    if (pairOpt.isDefined) {
-      val newOrientedScanner = pairOpt.get._1.orient(pairOpt.get._2).get
+    firstNewPairOpt.map { newPair =>
+      val (disorientedScanner, newOrientedScanner) = newPair
       val newOrientedScanners = orientedScanners :+ newOrientedScanner
-      val newDisorientedScanners = disorientedScanners.filter(_ != pairOpt.get._2)
+      val newDisorientedScanners = disorientedScanners.filterNot(_.eq(disorientedScanner))
 
       (newOrientedScanners, newDisorientedScanners)
-    }
-    else {
-      println("It didn't work.")
-      throw new RuntimeException("Error")
+    }.getOrElse {
+      throw new RuntimeException("None found")
     }
   }
 
