@@ -2,54 +2,78 @@ package com.keithalcock.aoc.year2021.day22
 
 import com.keithalcock.aoc.year2021.Aoc
 
-class Quadrant(val xRange: Range, val yRange: Range, val zRange: Range) {
-  protected var on: Boolean = false
-  val size: Long = xRange.length.toLong * yRange.length * zRange.length
-
-  def getOn: Boolean = on
-
-  def setOn(on: Boolean): Unit = this.on = on
-
-  def isInside(other: Quadrant): Boolean = {
-    other.xRange.start <= xRange.start && xRange.end <= other.xRange.end &&
-    other.yRange.start <= yRange.start && yRange.end <= other.yRange.end &&
-    other.zRange.start <= zRange.start && zRange.end <= other.zRange.end
-  }
-}
-
 class Universe(xRanges: Seq[Range], yRanges: Seq[Range], zRanges: Seq[Range]) {
   val xs = xRanges.flatMap { range => Seq(range.start, range.end) }.distinct.sorted
   val ys = yRanges.flatMap { range => Seq(range.start, range.end) }.distinct.sorted
   val zs = zRanges.flatMap { range => Seq(range.start, range.end) }.distinct.sorted
-  val quadrants = xs.sliding(2).flatMap { case Seq(xStart, xEnd) =>
-    val xRange = Range(xStart, xEnd)
+  val xsLength = xs.length - 1
+  val ysLength = ys.length - 1
+  val zsLength = zs.length - 1
+  val sizes = Array.fill(xsLength * ysLength * zsLength)(0L)
+  val ons = Array.fill(xsLength * ysLength * zsLength)(false)
 
-    ys.sliding(2).flatMap { case Seq(yStart, yEnd) =>
-      val yRange = Range(yStart, yEnd)
+  0.until(xsLength).foreach { xIndex =>
+    val xLength = xs(xIndex + 1) - xs(xIndex)
 
-      zs.sliding(2).map { case Seq(zStart, zEnd) =>
-        val zRange = Range(zStart, zEnd)
+    0.until(ysLength).foreach { yIndex =>
+      val yLength = ys(yIndex + 1) - ys(yIndex)
 
-        new Quadrant(xRange, yRange, zRange)
+      0.until(zsLength).foreach { zIndex =>
+        val zLength = zs(zIndex + 1) - zs(zIndex)
+        val size = xLength.toLong * yLength * zLength
+        val flatIndex = toFlatIndex(xIndex, yIndex, zIndex)
+
+        sizes(flatIndex) = size
       }
     }
-  }.toArray
+  }
+
+  def toFlatIndex(xIndex: Int, yIndex: Int, zIndex: Int): Int = {
+    xIndex * ysLength * zsLength +
+    yIndex * zsLength +
+    zIndex
+  }
+
+  def getRange(range: Range, ends: Seq[Int]): Range = {
+    val indices = ends.indices.dropRight(1).filter { endIndex =>
+      val start = ends(endIndex)
+      val end = ends(endIndex + 1)
+
+      range.start <= start && end <= range.end
+    }
+    val result = Range.inclusive(indices.head, indices.last)
+
+    result
+  }
 
   def execute(command: Command): Unit = {
-    val commandQuadrant = new Quadrant(command.xRange, command.yRange, command.zRange)
+    val on = command.on
+    val xRange = getRange(command.xRange, xs)
+    val yRange = getRange(command.yRange, ys)
+    val zRange = getRange(command.zRange, zs)
 
-    quadrants.foreach { quadrant =>
-      if (quadrant.isInside(commandQuadrant))
-        quadrant.setOn(command.on)
+    xRange.foreach { xIndex =>
+      yRange.foreach { yIndex =>
+        zRange.foreach { zIndex =>
+          val flatIndex = toFlatIndex(xIndex, yIndex, zIndex)
+
+          ons(flatIndex) = on
+        }
+      }
     }
   }
 
   def getCount: Long = {
-    val result = quadrants.map { quadrant =>
-      if (quadrant.getOn) quadrant.size else 0
-    }.sum
+    var count = 0L
 
-    result
+    ons.indices.foreach { index =>
+      val on = ons(index)
+
+      if (on)
+        count += sizes(index)
+    }
+
+    count
   }
 }
 
