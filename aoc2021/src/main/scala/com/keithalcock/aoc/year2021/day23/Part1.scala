@@ -60,14 +60,13 @@ object Part1 extends Aoc[Int] {
     newOccupants
   }
 
-  def moveFromRoom0(occupantIndex: Int, occupants: Seq[Char], spaces: Seq[Space], scores: MutableMap[Seq[Char], Int]): Unit = {
+  def moveFromRoom0(occupantIndex: Int, occupants: Seq[Char], spaces: Seq[Space], oldScore: Int, scores: MutableMap[Seq[Char], Int], winScoreOpt: Option[Int]): Unit = {
     val occupantLetter = occupants(occupantIndex)
     val room = spaces(occupantIndex).asInstanceOf[Room]
     val Room(_, roomLetter, hallwayIndex) = room
     val correctRoom = occupantLetter == roomLetter
 
     if (!correctRoom && occupants(occupantIndex + 1) == E) {
-      val oldScore = scores(occupants)
       val steps = 2 // This gets as far as the hallway.
 
       // Only try to move out of room if it isn't the right letter
@@ -83,12 +82,15 @@ object Part1 extends Aoc[Int] {
 
           if (!spaces(newHallwayIndex).asInstanceOf[Hallway].nextToRoom) {
             val newScore = oldScore + newSteps * costs(occupantLetter)
-            val newOccupants = duplicate(occupants, occupantIndex, newHallwayIndex, occupantLetter)
-            val oldScoreOpt = scores.get(newOccupants)
 
-            if (oldScoreOpt.isEmpty || oldScoreOpt.get > newScore) {
-              scores(newOccupants) = newScore
-              finisheds(newOccupants) = false
+            if (winScoreOpt.isEmpty || newScore < winScoreOpt.get) {
+              val newOccupants = duplicate(occupants, occupantIndex, newHallwayIndex, occupantLetter)
+              val oldScoreOpt = scores.get(newOccupants)
+
+              if (oldScoreOpt.isEmpty || oldScoreOpt.get > newScore) {
+                scores(newOccupants) = newScore
+                finisheds(newOccupants) = false
+              }
             }
           }
           newHallwayIndex -= 1
@@ -103,12 +105,15 @@ object Part1 extends Aoc[Int] {
           newSteps += 1
           if (!spaces(newHallwayIndex).asInstanceOf[Hallway].nextToRoom) {
             val newScore = oldScore + newSteps * costs(occupantLetter)
-            val newOccupants = duplicate(occupants, occupantIndex, newHallwayIndex, occupantLetter)
-            val oldScoreOpt = scores.get(newOccupants)
 
-            if (oldScoreOpt.isEmpty || oldScoreOpt.get > newScore) {
-              scores(newOccupants) = newScore
-              finisheds(newOccupants) = false
+            if (winScoreOpt.isEmpty || newScore < winScoreOpt.get) {
+              val newOccupants = duplicate(occupants, occupantIndex, newHallwayIndex, occupantLetter)
+              val oldScoreOpt = scores.get(newOccupants)
+
+              if (oldScoreOpt.isEmpty || oldScoreOpt.get > newScore) {
+                scores(newOccupants) = newScore
+                finisheds(newOccupants) = false
+              }
             }
           }
           newHallwayIndex += 1
@@ -117,7 +122,7 @@ object Part1 extends Aoc[Int] {
     }
   }
 
-  def moveFromRoom1(occupantIndex: Int, occupants: Seq[Char], spaces: Seq[Space], scores: MutableMap[Seq[Char], Int]): Unit = {
+  def moveFromRoom1(occupantIndex: Int, occupants: Seq[Char], spaces: Seq[Space], oldScore: Int, scores: MutableMap[Seq[Char], Int], winScoreOpt: Option[Int]): Unit = {
     val room = spaces(occupantIndex).asInstanceOf[Room]
     val Room(_, roomLetter, hallwayIndex) = room
     val occupantLetter = occupants(occupantIndex)
@@ -125,7 +130,6 @@ object Part1 extends Aoc[Int] {
     val otherCorrectRoom = occupants(occupantIndex - 1) == roomLetter
 
     if (!correctRoom || !otherCorrectRoom) {
-      val oldScore = scores(occupants)
       val steps = 1 // This gets as far as the hallway.
 
       // Only try to move out of room if it isn't the right letter
@@ -141,12 +145,15 @@ object Part1 extends Aoc[Int] {
 
           if (!spaces(newHallwayIndex).asInstanceOf[Hallway].nextToRoom) {
             val newScore = oldScore + newSteps * costs(occupantLetter)
-            val newOccupants = duplicate(occupants, occupantIndex, newHallwayIndex, occupantLetter)
-            val oldScoreOpt = scores.get(newOccupants)
 
-            if (oldScoreOpt.isEmpty || oldScoreOpt.get > oldScore) {
-              scores(newOccupants) = newScore
-              finisheds(newOccupants) = false
+            if (winScoreOpt.isEmpty || newScore < winScoreOpt.get) {
+              val newOccupants = duplicate(occupants, occupantIndex, newHallwayIndex, occupantLetter)
+              val oldScoreOpt = scores.get(newOccupants)
+
+              if (oldScoreOpt.isEmpty || oldScoreOpt.get > oldScore) {
+                scores(newOccupants) = newScore
+                finisheds(newOccupants) = false
+              }
             }
           }
           newHallwayIndex -= 1
@@ -162,12 +169,15 @@ object Part1 extends Aoc[Int] {
 
           if (!spaces(newHallwayIndex).asInstanceOf[Hallway].nextToRoom) {
             val newScore = oldScore + newSteps * costs(occupantLetter)
-            val newOccupants = duplicate(occupants, occupantIndex, newHallwayIndex, occupantLetter)
-            val oldScoreOpt = scores.get(newOccupants)
 
-            if (oldScoreOpt.isEmpty || oldScoreOpt.get > newScore) {
-              scores(newOccupants) = newScore
-              finisheds(newOccupants) = false
+            if (winScoreOpt.isEmpty || newScore < winScoreOpt.get) {
+              val newOccupants = duplicate(occupants, occupantIndex, newHallwayIndex, occupantLetter)
+              val oldScoreOpt = scores.get(newOccupants)
+
+              if (oldScoreOpt.isEmpty || oldScoreOpt.get > newScore) {
+                scores(newOccupants) = newScore
+                finisheds(newOccupants) = false
+              }
             }
           }
           newHallwayIndex += 1
@@ -176,7 +186,7 @@ object Part1 extends Aoc[Int] {
     }
   }
 
-  def moveFromHallway(occupantIndex: Int, occupants: Seq[Char], spaces: Seq[Space], scores: MutableMap[Seq[Char], Int]): Unit = {
+  def moveFromHallway(occupantIndex: Int, occupants: Seq[Char], spaces: Seq[Space], oldScore: Int, scores: MutableMap[Seq[Char], Int], winScoreOpt: Option[Int]): Boolean = {
     val occupantLetter = occupants(occupantIndex)
     val wallRoom = spaces.find { space =>
       space.isInstanceOf[Room] && space.asInstanceOf[Room].letter == occupantLetter
@@ -193,7 +203,6 @@ object Part1 extends Aoc[Int] {
                     (hallwayIndex > occupantIndex && Range(occupantIndex + 1, hallwayIndex, +1).forall(occupants(_) == E))
 
       if (freeway) {
-        val oldScore = scores(occupants)
         val roomSteps = if (occupants(wallRoomIndex) == E) 2 else 1
         val newSteps = math.abs(hallwayIndex - occupantIndex) + roomSteps
         val newRoomIndex = if (occupants(wallRoomIndex) == E) wallRoomIndex else doorRoomIndex
@@ -201,62 +210,70 @@ object Part1 extends Aoc[Int] {
         val newOccupants = duplicate(occupants, occupantIndex, newRoomIndex, occupantLetter)
         val oldScoreOpt = scores.get(newOccupants)
 
-        if (oldScoreOpt.isEmpty || oldScoreOpt.get > newScore) {
+        if (oldScoreOpt.isEmpty || newScore < oldScoreOpt.get) {
           scores(newOccupants) = newScore
           finisheds(newOccupants) = false
+          newOccupants == win
         }
+        else false
       }
+      else false
     }
+    else false
   }
 
   def run(occupants: Seq[Char]): Int = {
+    var winScoreOpt: Option[Int] = None
     scores(occupants) = 0
     finisheds(occupants) = false
 
-    def loop(): Boolean = {
-      // Maybe look through scores and find the minimum first rather than using just any.
-      val pairOpt = finisheds.find { case (_, boolean) =>
-        !boolean
+    def loopOccupants(occupants: Seq[Char]): Unit = {
+      val oldScore = scores(occupants)
+      val indexes = occupants.indices.flatMap { index =>
+        if (occupants(index) != E && occupants(index) != W) Some(index)
+        else None
       }
 
-      pairOpt.foreach { case (occupants, _) =>
-        if (occupants == win) {
-          finisheds(occupants) = true
-          // Mark anything with a score at or more than this score as done.
-          // Those things don't need to be followed anymore.
-        }
-        else {
-          val indexes = occupants.indices.flatMap { index =>
-            if (occupants(index) != E && occupants(index) != W) Some(index)
-            else None
-          }
-
-          indexes.foreach { index =>
-            val space = spaces(index)
-
-            space match {
-              case Room(roomIndex, _, _) =>
-                if (roomIndex == 0)
-                  moveFromRoom0(index, occupants, spaces, scores)
-                else {
-                  assert(roomIndex == 1)
-                  moveFromRoom1(index, occupants, spaces, scores)
-                }
-              case Hallway(_, nextToRoom) =>
-                assert(!nextToRoom)
-                moveFromHallway(index, occupants, spaces, scores)
+      indexes.foreach { index =>
+        spaces(index) match {
+          case Room(roomIndex, _, _) =>
+            if (roomIndex == 0)
+              moveFromRoom0(index, occupants, spaces, oldScore, scores, winScoreOpt)
+            else {
+              assert(roomIndex == 1)
+              moveFromRoom1(index, occupants, spaces, oldScore, scores, winScoreOpt)
             }
+          case Hallway(_, nextToRoom) =>
+            assert(!nextToRoom)
+            val getsWon = moveFromHallway(index, occupants, spaces, oldScore, scores, winScoreOpt)
 
+            if (getsWon) {
+              val winScore = scores(win)
 
-            // If not in scores or score is lower than before,
-            // add the new score, set to unfinished
-
-          }
-          finisheds(occupants) = true
-
+              winScoreOpt = Some(winScore)
+              scores.foreach { case (occupants, score) =>
+                if (score >= winScore)
+                  finisheds(occupants) = true
+              }
+            }
         }
       }
-      pairOpt.isDefined
+      finisheds(occupants) = true
+    }
+
+    def loop(): Boolean = {
+      val occupantsFinishedPairOpt = finisheds.find { case (occupants, boolean) =>
+        !boolean && occupants != win
+      }
+
+      if (occupantsFinishedPairOpt.isDefined) {
+        val occupants = occupantsFinishedPairOpt.get._1
+
+        loopOccupants(occupants)
+        true
+      }
+      else
+        false
     }
 
     while (loop()) { }
