@@ -2,18 +2,19 @@ package com.keithalcock.aoc.year2021.day24
 
 import com.keithalcock.aoc.year2021.Aoc
 
+import scala.collection.mutable.{Map => MutableMap}
 
-class State(regs: Array[Int]) {
+class State(regs: Array[Long]) {
 
-  def set(reg: Int, value: Int): Unit = regs(reg) = value
+  def set(reg: Int, value: Long): Unit = regs(reg) = value
 
-  def get(reg: Int): Int = regs(reg)
+  def get(reg: Int): Long = regs(reg)
 
   def reset(): Unit = {
-    regs(0) = 0
-    regs(1) = 0
-    regs(2) = 0
-    regs(3) = 0
+    regs(0) = 0L
+    regs(1) = 0L
+    regs(2) = 0L
+    regs(3) = 0L
   }
 }
 
@@ -34,15 +35,17 @@ trait Command {
 
 object Command {
   val    inpPattern = "^inp ([wxyz])$".r
+
   val addRegPattern = "^add ([wxyz]) ([wxyz])$".r
-  val addValPattern = "^add ([wxyz]) (-?\\d+)$".r
   val mulRegPattern = "^mul ([wxyz]) ([wxyz])$".r
-  val mulValPattern = "^mul ([wxyz]) (-?\\d+)$".r
   val divRegPattern = "^div ([wxyz]) ([wxyz])$".r
-  val divValPattern = "^div ([wxyz]) (-?\\d+)$".r
   val modRegPattern = "^mod ([wxyz]) ([wxyz])$".r
-  val modValPattern = "^mod ([wxyz]) (-?\\d+)$".r
   val eqlRegPattern = "^eql ([wxyz]) ([wxyz])$".r
+
+  val addValPattern = "^add ([wxyz]) (-?\\d+)$".r
+  val mulValPattern = "^mul ([wxyz]) (-?\\d+)$".r
+  val divValPattern = "^div ([wxyz]) (-?\\d+)$".r
+  val modValPattern = "^mod ([wxyz]) (-?\\d+)$".r
   val eqlValPattern = "^eql ([wxyz]) (-?\\d+)$".r
 
   def regIndex(reg: String): Int = {
@@ -148,43 +151,53 @@ case class EqlVal(left: Int, right: Int) extends Command {
 class Machine(commands: Seq[Command]) {
   val state = new State(Array(0, 0, 0, 0))
 
-  def process(input: Input): Boolean = {
+  def process(input: Input, z: Long): Long = {
     state.reset()
+    state.set(3, z)
 
     commands.foreach { command =>
       command.execute(state, input)
     }
 
-    state.get(3) == 0
+    state.get(3)
   }
 }
 
 object Part1 extends Aoc[Long] {
 
   def run(lines: Iterator[String]): Long = {
-    val commands = lines.map { line =>
-      Command(line)
-    }.toArray
-    val machine = new Machine(commands)
-    var number = 100000000000000L
-
-    while ({
-      number -= 1
-
-      val numberString = number.toString
-
-      if (!numberString.contains('0')) {
-        println(numberString)
-
-        val input = new Input(numberString.map(_ - '0').toArray)
-        val valid = machine.process(input)
-
-        !valid
+    val line = lines.mkString("\n")
+    val stanzas = line.split("\n\n")
+    val machines = stanzas.map { stanza =>
+      val commands = stanza.split('\n').map { line =>
+        Command(line)
       }
-      else true
-    }) { }
 
-    number
+      new Machine(commands)
+    }
+    val inputArray = Array(0)
+    var zMap = MutableMap(0L -> 0L) // z -> input
+
+    machines.foreach { machine =>
+      val newZMap = MutableMap[Long, Long]()
+
+      Range.inclusive(1, 9).foreach { w =>
+        zMap.foreach { case (oldZ, oldInput) =>
+          inputArray(0) = w
+          val newZ = machine.process(new Input(inputArray), oldZ)
+          val newInput = oldInput * 10 + w
+          val prevInputOpt = newZMap.get(newZ)
+
+          if (prevInputOpt.isEmpty || newInput > prevInputOpt.get)
+            newZMap(newZ) = newInput
+        }
+      }
+      zMap = newZMap
+    }
+
+    val maxZeroInput = zMap(0L)
+
+    maxZeroInput
   }
 }
 
