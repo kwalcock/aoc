@@ -196,7 +196,7 @@ object Part1 extends Aoc[Int] {
   }
 
   def run(lines: Iterator[String]): Int = {
-    run(lines.next())
+    runString(lines.next())
   }
 }
 

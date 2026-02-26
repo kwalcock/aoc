@@ -6,7 +6,7 @@ class Part2Test extends Test {
   val targetX = Range.inclusive(20, 30)
   val targetY = Range.inclusive(-10, -5)
 
-  behavior of "Part2"
+  behavior of "Day17.Part2"
 
   it should "behave" in {
     val expectedResult = 112

@@ -22,7 +22,7 @@ class BitCounter(bitCount: Int) {
   }
 
   def toInt(bits: Array[Char]): Int = {
-    Integer.parseInt(String.valueOf(bits), 0, bitCount, 2)
+    Integer.parseInt(String.valueOf(bits), 2)
   }
 
   def mkGammaChars(): Array[Char] = Array.tabulate(bitCount) { index =>

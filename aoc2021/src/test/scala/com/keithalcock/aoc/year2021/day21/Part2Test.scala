@@ -4,7 +4,7 @@ import com.keithalcock.aoc.Test
 
 class Part2Test extends Test {
 
-  behavior of "Part2"
+  behavior of "Day21.Part2"
 
   it should "behave" in {
     val expectedResult = 444356092776315L
