@@ -4,7 +4,7 @@ import com.keithalcock.aoc.Test
 
 class Part2Test extends Test {
 
-  behavior of "Part2"
+  behavior of "Day18.Part2"
 
   it should "calculate the max" in {
     val expectedResult = 3993

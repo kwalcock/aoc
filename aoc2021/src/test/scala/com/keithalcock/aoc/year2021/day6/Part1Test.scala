@@ -4,7 +4,7 @@ import com.keithalcock.aoc.Test
 
 class Part1Test extends Test {
 
-  behavior of "Part1"
+  behavior of "Day6.Part1"
 
   it should "behave for 18 days" in {
     val days = 18

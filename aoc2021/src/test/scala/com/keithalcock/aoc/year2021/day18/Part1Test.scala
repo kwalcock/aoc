@@ -4,7 +4,7 @@ import com.keithalcock.aoc.Test
 
 class Part1Test extends Test {
 
-  behavior of "Part1"
+  behavior of "Day18.Part1"
 
   it should "parse Snailfish numbers" in {
     {
