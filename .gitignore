@@ -1,7 +1,18 @@
+# Intelli
+.idea
+
+# mill
+mill
+mill.bat
+out
+
+# sbt
+target
+
+# VSCode
 .bloop
 .bsp
-.idea
 .metals
 .vscode
-target
 metals.sbt
+sbt-launch.jar
