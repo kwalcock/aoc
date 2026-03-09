@@ -28,5 +28,7 @@ object `package` extends MyModule {
   )
 
   object aoc2021 extends MyModule
-  object aoc2025 extends MyModule
+  object aoc2025 extends MyModule {
+    override def scalaVersion = "3.3.7"
+  }
 }

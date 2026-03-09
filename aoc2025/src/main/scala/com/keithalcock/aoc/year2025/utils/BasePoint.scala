@@ -1,6 +1,5 @@
 package com.keithalcock.aoc.year2025.utils
 
-trait BasePoint {
+trait BasePoint:
   def x: Int
   def y: Int
-}

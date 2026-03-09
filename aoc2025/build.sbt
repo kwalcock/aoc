@@ -1,5 +1,3 @@
-val scalaVersion = "2.12.20"
-
 name := "aoc2025"
 
 libraryDependencies ++= Seq(
