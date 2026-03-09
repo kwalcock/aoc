@@ -1,0 +1,33 @@
+//| mill-version: 1.1.2
+//| mill-jvm-version: system
+
+package build
+
+import mill.{SbtModule, SbtTests}
+
+trait MyModule extends SbtModule {
+  def scalaVersion = "2.12.21"
+
+  def mvnDeps = Seq(
+    mvn"org.scala-lang.modules::scala-collection-compat:2.13.0"
+  )
+
+  object test extends SbtTests with TestModule.ScalaTest {
+    def mvnDeps = Seq(
+      mvn"org.scalatest::scalatest:3.2.19"
+    )
+  }
+}
+
+object Root extends MyModule {
+  def moduleDeps = Seq(
+    Aoc2021,
+    Aos2025
+  )
+}
+
+object Aoc2021 extends MyModule {
+}
+
+object Aoc2025 extends MyModule {
+}

@@ -2,8 +2,6 @@
 .idea
 
 # mill
-mill
-mill.bat
 out
 
 # sbt
