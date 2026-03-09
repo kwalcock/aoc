@@ -3,7 +3,9 @@
 
 package build
 
-import mill.{SbtModule, SbtTests}
+import mill.javalib.`package`.DepSyntax // for mvn""
+import mill.scalalib.SbtModule
+import mill.scalalib.TestModule
 
 trait MyModule extends SbtModule {
   def scalaVersion = "2.12.21"
@@ -12,22 +14,19 @@ trait MyModule extends SbtModule {
     mvn"org.scala-lang.modules::scala-collection-compat:2.13.0"
   )
 
-  object test extends SbtTests with TestModule.ScalaTest {
+  object test extends this.SbtTests with TestModule.ScalaTest {
     def mvnDeps = Seq(
       mvn"org.scalatest::scalatest:3.2.19"
     )
   }
 }
 
-object Root extends MyModule {
+object `package` extends MyModule {
   def moduleDeps = Seq(
-    Aoc2021,
-    Aos2025
+    aoc2021,
+    aoc2025
   )
-}
 
-object Aoc2021 extends MyModule {
-}
-
-object Aoc2025 extends MyModule {
+  object aoc2021 extends MyModule
+  object aoc2025 extends MyModule
 }
