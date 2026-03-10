@@ -14,3 +14,6 @@ target
 .vscode
 metals.sbt
 sbt-launch.jar
+
+# Scala
+*.scala.semanticdb

@@ -7,8 +7,8 @@ class Part2Test extends Test {
   behavior of "Day1.Part2"
 
   it should "behave" in {
-    val expectedResult = 5
-    val actualResult = Part2.run("com/keithalcock/aoc/year2025/day1/test.txt")
+    val expectedResult = 6
+    val actualResult = Part2.run(50, "com/keithalcock/aoc/year2025/day1/test.txt")
 
     actualResult should be (expectedResult)
   }
