@@ -9,7 +9,8 @@ object Part1 extends Aoc[Int]:
         .map(_.toInt)
     val increasingCount = depths
         .sliding(2)
-        .count { case Seq(prev, next) => prev < next }
+        .count:
+          case Seq(prev, next) => prev < next
 
     increasingCount
 
