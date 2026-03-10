@@ -7,17 +7,16 @@ class Part1Test extends Test {
   behavior of "Rotation"
 
   it should "behave" in {
-    val size = 100
     val l = 'L'
     val r = 'R'
 
-    new Rotation(size, l, 0).value should be (0)
-    new Rotation(size, l, 99).value should be (99)
-    new Rotation(size, l, 101).value should be (1)
+    new Part1.Rotation(l, 0).value should be (0)
+    new Part1.Rotation(l, 99).value should be (99)
+    new Part1.Rotation(l, 101).value should be (1)
 
-    new Rotation(size, r, 0).value should be (0)
-    new Rotation(size, r, 99).value should be (1)
-    new Rotation(size, r, 101).value should be (99)
+    new Part1.Rotation(r, 0).value should be (0)
+    new Part1.Rotation(r, 99).value should be (1)
+    new Part1.Rotation(r, 101).value should be (99)
   }
 
   behavior of "Day1.Part1"
