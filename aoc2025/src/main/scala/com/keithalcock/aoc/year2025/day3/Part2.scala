@@ -11,11 +11,10 @@ object Part2 extends Aoc[Long]:
         // Start to the right of previous find.
         // Leave enough places on the right for the remaining digits.
         val start = prev + 1
-        val end = length - (12 - index)
-        val substring = string.substring(start, end)
+        val substring = string.view.drop(start).dropRight(12 - index)
         val digit = substring.max
         val leftIndex = start + substring.indexOf(digit)
-        val newTotal = total * 10 + digit.toString.toInt
+        val newTotal = total * 10 + digit.asDigit
 
         (leftIndex, newTotal)
 

@@ -5,11 +5,11 @@ import com.keithalcock.aoc.year2025.Aoc
 object Part1 extends Aoc[Int]:
 
   def joltage(string: String): Int =
-    val left = string.dropRight(1).max
+    val left = string.view.dropRight(1).max
     val leftIndex = string.indexOf(left)
-    val right = string.drop(leftIndex + 1).max
+    val right = string.view.drop(leftIndex + 1).max
 
-    left.toString.toInt * 10 + right.toString.toInt
+    left.asDigit * 10 + right.asDigit
 
   def run(lines: Iterator[String]): Int =
     val scores = lines
