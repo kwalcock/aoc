@@ -6,13 +6,17 @@ import scala.util.Using
 object Part1:
   val size = 100
 
+  extension (value: Int)
+    def %+(base: Int): Int = math.floorMod(value, base)
+
   case class Rotation(value: Int):
 
     def this(direction: Char, amount: Int) =
       this {
         val value = direction match
-          case 'L' => Rotation.normalize(-amount)
-          case 'R' => Rotation.normalize(amount)
+          case 'L' => -amount %+ size
+          case 'R' => amount %+ size
+
           case _ => ???
 
         require(amount >= 0)
@@ -22,16 +26,6 @@ object Part1:
 
     def this(string: String) =
       this(string.head, string.tail.toInt)
-
-  object Rotation:
-
-    def normalize(value: Int): Int =
-      val modded = value % size
-
-      if modded < 0 then
-        modded + size
-      else
-        modded
 
   def run(start: Int, resourceName: String): Int =
     Using.resource(Source.fromResource(resourceName)): source =>
@@ -45,7 +39,7 @@ object Part1:
         .map: line =>
           new Rotation(line)
         .scanLeft(start): (current: Int, rotation: Rotation) =>
-          Rotation.normalize(current + rotation.value)
+          (current + rotation.value) %+ size
         .count(_ == 0)
 
     count

@@ -6,6 +6,9 @@ import scala.util.Using
 object Part2:
   val size = 100
 
+  extension (value: Int)
+    def %+(base: Int): Int = math.floorMod(value, base)
+
   case class Rotation(value: Int):
 
     def this(direction: Char, amount: Int) =
@@ -22,16 +25,6 @@ object Part2:
     def fullCount = value.abs / size
 
     def restCount = value % size
-
-  object Rotation:
-
-    def normalize(value: Int): Int =
-      val modded = value % size
-
-      if modded < 0 then
-        modded + size
-      else
-        modded
 
   def run(start: Int, resourceName: String): Int =
     Using.resource(Source.fromResource(resourceName)): source =>
@@ -63,7 +56,7 @@ object Part2:
             else
               (current, 0) // Don't count if not moved, especially if it is already at 0.
 
-          (Rotation.normalize(newCurrent), newCount)
+          (newCurrent %+ size, newCount)
         .map(_._2) // Isolate the counts.
         .sum
 
