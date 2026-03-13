@@ -5,8 +5,7 @@ import com.keithalcock.aoc.year2025.Aoc
 object Part1 extends Aoc[Int]:
 
   def joltage(string: String): Int =
-    val left = string.view.dropRight(1).max
-    val leftIndex = string.indexOf(left)
+    val (left, leftIndex) = string.view.init.zipWithIndex.maxBy(_._1)
     val right = string.view.drop(leftIndex + 1).max
 
     left.asDigit * 10 + right.asDigit

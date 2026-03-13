@@ -6,17 +6,16 @@ object Part2 extends Aoc[Long]:
 
   def joltage(string: String): Long =
     val length = string.length
-    val (left, total) = 1.to(12).foldLeft((-1, 0L)):
-      case ((prev, total), index) =>
+    val (_, total) = 1.to(12).foldLeft((0, 0L)):
+      case ((start, total), index) =>
         // Start to the right of previous find.
         // Leave enough places on the right for the remaining digits.
-        val start = prev + 1
         val substring = string.view.drop(start).dropRight(12 - index)
-        val digit = substring.max
-        val leftIndex = start + substring.indexOf(digit)
+        val (digit, digitIndex) = substring.zipWithIndex.maxBy(_._1)
+        val newStart = start + digitIndex + 1
         val newTotal = total * 10 + digit.asDigit
 
-        (leftIndex, newTotal)
+        (newStart, newTotal)
 
     total
 
