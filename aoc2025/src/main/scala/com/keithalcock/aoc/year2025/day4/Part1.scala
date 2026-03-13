@@ -15,8 +15,8 @@ object Part1 extends Aoc[Int]:
       require(lines.forall(_.length == dim1))
       require(lines.forall(_.forall(inventory)))
 
-      val range1 = 0.until(dim1)
-      val range2 = 0.until(dim2)
+      val range1 = lines.head.indices
+      val range2 = lines.indices
 
       (range1, range2)
 

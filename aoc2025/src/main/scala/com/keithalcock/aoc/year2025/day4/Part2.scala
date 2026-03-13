@@ -16,8 +16,8 @@ object Part2 extends Aoc[Int]:
     require(lines.forall(_.length == dim1))
     require(lines.forall(_.forall(inventory)))
 
-    val range1 = 0.until(dim1)
-    val range2 = 0.until(dim2)
+    val range1 = lines.head.indices
+    val range2 = lines.indices
     val rollCount = countIf: (index1: Int, index2: Int) =>
       atOpt(index1, index2).contains(paper)
 
