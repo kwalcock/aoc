@@ -23,10 +23,10 @@ object Part2 extends Aoc[Long]:
 
   def run(lines: Iterator[String]): Long =
     val problems = transpose(lines).iterator
-    val results = new ArrayBuffer[Long]()
+    val results = ArrayBuffer.empty[Long]
 
     while problems.hasNext do
-      val strings = problems.takeWhile(_.trim.nonEmpty).toSeq
+      val strings = problems.takeWhile(!_.isBlank).toSeq
       val initValues = strings.init.map(_.trim.toLong)
       val lastValue = strings.last.init.trim.toLong
       val values = initValues :+ lastValue

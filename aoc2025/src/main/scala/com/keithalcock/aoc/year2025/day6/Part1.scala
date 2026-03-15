@@ -6,7 +6,7 @@ object Part1 extends Aoc[Long]:
 
   def run(lines: Iterator[String]): Long =
     val problems = lines
-      .map(_.trim.split("\\s+"))
+      .map(_.trim.split(raw"\s+"))
       .toIndexedSeq
     val widthRange = problems.head.indices
     val lengthRange = problems.indices
