@@ -2,6 +2,8 @@ package com.keithalcock.aoc.year2025.day6
 
 import com.keithalcock.aoc.year2025.Aoc
 
+import scala.annotation.tailrec
+
 object Part1 extends Aoc[Long]:
 
   def run(lines: Iterator[String]): Long =
@@ -24,31 +26,32 @@ object Part1 extends Aoc[Long]:
 
     result
 
-
-
   def run2(lines: Iterator[String]): Long =
-    val headPairs = lines.next.trim.split(raw"\s+").map: value =>
+
+    def toStrings(line: String): Array[String] = line.trim.split(raw"\s+")
+
+    @tailrec
+    def loop(lines: Iterator[String], pairs: Array[(Long, Long)]): Array[Long] =
+      val line = lines.next
+      val strings = toStrings(line)
+
+      if !lines.hasNext then
+        val monos = pairs.zip(strings).map:
+          case (pair, "+") => pair._1
+          case (pair, "*") => pair._2
+
+        monos
+      else
+        val values = strings.map(_.toLong)
+        val newPairs = pairs.zip(values).map:
+          case (pair, value) =>
+            (pair._1 + value, pair._2 * value) // Perform both calculations.
+
+        loop(lines, newPairs)
+
+    val headPairs = toStrings(lines.next).map: value =>
       (value.toLong, value.toLong)
-
-    val pairs = lines.foldLeft(headPairs): (pairs, line) =>
-      val strings = line.trim.split(raw"\s+")
-
-      strings.head match
-        case "+" | "*" =>
-          pairs.zip(strings).map:
-            case (pair, string) =>
-              string match
-                case "+" => (pair._1, 0) // Keep just the sum.
-                case "*" => (0, pair._2) // Keep just the product.
-        case _ =>
-          pairs.zip(strings).map:
-            case (pair, string) =>
-              val value = string.toLong
-
-              (pair._1 + value, pair._2 * value) // Perform both calculations.
-
-    val results = pairs.map: pair =>
-      pair._1 + pair._2
+    val results = loop(lines, headPairs)
     val result = results.sum
 
     result
