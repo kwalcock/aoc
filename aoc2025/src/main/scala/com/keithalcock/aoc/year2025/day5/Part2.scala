@@ -42,6 +42,12 @@ object Part2 extends Aoc[Long]:
         case (0, 1) => Seq(LongRange(start, range.start - 1))
 
         case (1, 1) => Seq(this)
+
+    def conjoin(range: LongRange): LongRange =
+      if intersects(range) then
+        LongRange(math.min(start, range.start), math.max(end, range.end))
+      else
+        this
   end LongRange
 
   def disjoin(ranges: Seq[LongRange]): Seq[LongRange] =
@@ -70,6 +76,31 @@ object Part2 extends Aoc[Long]:
     loop(ranges, Seq.empty)
   end disjoin
 
+  def conjoin(ranges: Seq[LongRange]): Seq[LongRange] =
+
+    @tailrec
+    def loop(unfinisheds: Seq[LongRange], finisheds: Seq[LongRange]): Seq[LongRange] =
+      if unfinisheds.isEmpty then
+        finisheds
+      else if unfinisheds.length == 1 then
+        finisheds :+ unfinisheds.head
+      else
+        val head = unfinisheds.head
+        val tail = unfinisheds.tail
+        val intersects = tail.exists(head.intersects)
+
+        if !intersects then
+          loop(tail, finisheds :+ head)
+        else
+          val conjoins = tail.map(_.conjoin(head))
+
+          loop(conjoins, finisheds)
+    end loop
+
+    loop(ranges, Seq.empty)
+  end conjoin
+
+  // This chops up the ranges into smaller parts.
   def run(lines: Iterator[String]): Long =
     val ranges = lines
       .takeWhile(_.nonEmpty)
@@ -78,6 +109,18 @@ object Part2 extends Aoc[Long]:
       .toSeq
     val disjoinedRanges = disjoin(ranges)
     val count = disjoinedRanges.map(_.length).sum
+
+    count
+
+  // This combines the ranges into larger parts.
+  def run2(lines: Iterator[String]): Long =
+    val ranges = lines
+        .takeWhile(_.nonEmpty)
+        .collect:
+          case s"${start}-${end}" => LongRange(start.toLong, end.toLong)
+        .toSeq
+    val conjoinedRanges = conjoin(ranges)
+    val count = conjoinedRanges.map(_.length).sum
 
     count
 
