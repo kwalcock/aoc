@@ -22,18 +22,20 @@ object Part1 extends Aoc[Int]:
   def solve(machine: Machine): Int =
 
     @tailrec
-    def loop(machines: Seq[Machine]): Int =
+    def loop(machines: Seq[Machine], seenStates: Set[Set[Int]]): Int =
       val machine = machines.head
 
       if machine.isSolved then
         machine.count
       else
-        val newMachines = machine.buttons.indices.map(machine.pushButton)
-        val allMachines = machines.tail ++ newMachines
+        val pushedMachines = machine.buttons.indices.map(machine.pushButton)
+        val filteredMachines = pushedMachines.filterNot(machine => seenStates.contains(machine.state))
+        val newMachines = machines.tail ++ filteredMachines
+        val newSeenStates = seenStates ++ filteredMachines.map(_.state)
 
-        loop(allMachines)
+        loop(newMachines, newSeenStates)
 
-    loop(Seq(machine))
+    loop(Seq(machine), Set(machine.state))
 
   def run(lines: Iterator[String]): Int =
     val result = lines
