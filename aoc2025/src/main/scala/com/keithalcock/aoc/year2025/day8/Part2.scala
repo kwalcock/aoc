@@ -4,8 +4,6 @@ import com.keithalcock.aoc.year2025.Aoc
 
 import scala.annotation.tailrec
 import scala.collection.mutable.Set as MutableSet
-import scala.io.Source
-import scala.util.Using
 
 object Part2 extends Aoc[Long]:
 
