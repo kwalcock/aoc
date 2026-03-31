@@ -30,3 +30,6 @@ lazy val aoc2025 = project.in(file("aoc2025"))
 // lazy val helloworld = crossProject(JVMPlatform, NativePlatform).in(file("helloworld"))
 lazy val helloworld = project.in(file("helloworld"))
     .enablePlugins(ScalaNativePlugin)
+    .settings(
+      scalaVersion := scala3
+    )
