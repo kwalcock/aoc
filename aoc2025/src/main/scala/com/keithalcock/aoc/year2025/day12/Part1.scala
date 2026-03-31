@@ -60,47 +60,65 @@ object Part1 extends Aoc[Int]:
   case class Region(width: Int, length: Int, countIndexPairs: List[(Int, Int)]):
 
     def canFit(shapeVariations: Seq[Seq[Shape]]): Boolean =
+      val board = Array.fill(length)(Array.fill(width)(false))
+      val offPoint = Point(-1, -1)
+      // For each variation, keep track of where it was last positioned.
+      // When it is next positioned, try only down and right from it.
+      val mostRecentPointsMatrix = shapeVariations
+          .map: variations =>
+            variations.map(_ => List(offPoint)).toArray
+          .toArray
 
-      def loop(countIndexPairs: List[(Int, Int)], occupied: Set[Point]): Boolean =
+      def loop(countIndexPairs: List[(Int, Int)]): Boolean = {
+        println(countIndexPairs)
         if countIndexPairs.isEmpty then
           true
         else
           val (count, index) = countIndexPairs.head
           val variations = shapeVariations(index)
-          val shapeSize = variations.head.points.size
-          val regionSize = width * length - occupied.size
-          val noSpace = shapeSize > regionSize
-          if noSpace then
-            println("Nothing left")
-          val result = shapeSize <= regionSize && {
+          val result =
             val newCountIndexPairs =
               if count == 1 then
                 countIndexPairs.tail
               else
                 (count - 1, index) :: countIndexPairs.tail
-            val result = variations.exists: variation =>
+            val result = variations.indices.exists: variationIndex =>
+              val variation = variations(variationIndex)
+              val mostRecentPointsList = mostRecentPointsMatrix(index)(variationIndex)
+              val mostRecentPoint = mostRecentPointsList.head
+              val yRange = math.max(mostRecentPoint.y, 0).to(length - variation.length)
               val xRange = 0.to(width - variation.width)
-              val yRange = 0.to(length - variation.length)
-              val result = xRange.exists: x =>
-                yRange.exists: y =>
-                  val movedShape = variation.moveBy(Point(x, y))
-                  val intersects = movedShape.points.exists(occupied.contains)
+              val result = yRange.exists: y =>
+                xRange.exists: x =>
+                  val isForward = y > mostRecentPoint.y || y == mostRecentPoint.y && x > mostRecentPoint.x
 
-                  !intersects && {
-                    val newOccupied = occupied ++ movedShape.points
+                  isForward && {
+                    val intersects = variation.points.exists: point =>
+                      board(point.y + y)(point.x + x)
+                    println(s"x = $x, y = $y")
+                    !intersects && {
+                      variation.points.foreach: point =>
+                        board(point.y + y)(point.x + x) = true
+                      mostRecentPointsMatrix(index)(variationIndex) = Point(x, y) :: mostRecentPointsList
 
-                    loop(newCountIndexPairs, newOccupied)
+                      val result = loop(newCountIndexPairs)
+
+                      mostRecentPointsMatrix(index)(variationIndex) = mostRecentPointsList
+                      variation.points.foreach: point =>
+                        board(point.y + y)(point.x + x) = false
+                      result
+                    }
                   }
               result
             result
-          }
           result
+      }
 
-      loop(countIndexPairs, Set.empty)
+      loop(countIndexPairs)
     end canFit
 
   def run(lines: Iterator[String]): Int =
-    val stanzas = lines.mkString("\n").split("\n\n")
+    val stanzas = IArray.from(lines.mkString("\n").split("\n\n"))
     val shapes = stanzas.init.map: string =>
       val points = string.linesIterator.drop(1).toSeq.zipWithIndex.flatMap:
         case (line, y) =>

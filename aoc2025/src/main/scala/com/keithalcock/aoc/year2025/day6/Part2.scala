@@ -13,7 +13,7 @@ object Part2 extends Aoc[Long]:
       line + (" " * (maxWidth - line.length))
     val widthRange = indexedLines.head.indices
     val lengthRange = indexedLines.indices
-    val transposed = Array.tabulate(widthRange.length): widthIndex =>
+    val transposed = IndexedSeq.tabulate(widthRange.length): widthIndex =>
       val chars = Array.tabulate(lengthRange.length): lengthIndex =>
         indexedLines(lengthIndex)(widthIndex)
 

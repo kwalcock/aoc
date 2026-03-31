@@ -39,6 +39,7 @@ object Part1 extends Aoc[Long]:
         val monos = pairs.zip(strings).map:
           case (pair, "+") => pair._1
           case (pair, "*") => pair._2
+          case (_, _) => ???
 
         monos
       else
