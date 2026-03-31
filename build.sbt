@@ -1,9 +1,8 @@
-// val scala2 = "2.12.21" // not good for scala native
-val scala2 = "2.12.20"
-// val scala3 = "3.3.7" // not good for scala native
-val scala3 = "3.3.4"
+val scala2 = "2.12.21"
+val scala3 = "3.3.7"
+val scala3native = "3.3.4" // because the newer scala3 isn't supported
 
-//ThisBuild/crossScalaVersions := Seq(scala2, scala3)
+ThisBuild/crossScalaVersions := Seq(scala2, scala3)
 ThisBuild/scalaVersion := scala3
 
  lazy val root = (project in file("."))
@@ -31,5 +30,5 @@ lazy val aoc2025 = project.in(file("aoc2025"))
 lazy val helloworld = project.in(file("helloworld"))
     .enablePlugins(ScalaNativePlugin)
     .settings(
-      scalaVersion := scala3
+      scalaVersion := scala3native
     )
