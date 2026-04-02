@@ -68,7 +68,7 @@ object Part2 extends Aoc[Long]:
   def run(lines: Iterator[String]): Long =
     val junctionBoxes = lines
       .map: line =>
-        val Array(x, y, z) = line.split(",").map(_.toInt)
+        val IArray(x, y, z) = line.isplit(',').map(_.toInt)
         JunctionBox(x, y, z)
       .toArray
     val distanceRecord = connect(junctionBoxes.length, junctionBoxes)

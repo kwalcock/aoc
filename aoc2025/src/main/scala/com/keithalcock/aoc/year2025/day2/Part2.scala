@@ -19,11 +19,10 @@ object Part2 extends Aoc[Long]:
 
   def run(lines: Iterator[String]): Long =
     val invalidIDs = lines
-      .flatMap(_.split(","))
-      .map(_.split("-"))
-      .map(array => array.head.toLong.to(array.last.toLong))
+      .flatMap(_.isplit(','))
+      .map(_.isplit('-'))
+      .map(iArray => iArray.head.toLong.to(iArray.last.toLong))
       .flatMap(_.filter(isInvalid))
-      .toSeq
 
     val result = invalidIDs.sum
     result

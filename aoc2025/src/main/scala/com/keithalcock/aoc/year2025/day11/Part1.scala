@@ -36,9 +36,9 @@ object Part1 extends Aoc[Int]:
   def run(lines: Iterator[String]): Int =
     val machines = lines
       .map: line =>
-        val fields = line.split(" ")
+        val fields = line.isplit(' ')
         val name = fields.head.init
-        val outputs = fields.tail.toSeq
+        val outputs = fields.tail
 
         name -> Machine(name, outputs)
       .toMap

@@ -118,7 +118,7 @@ object Part1 extends Aoc[Int]:
     end canFit
 
   def run(lines: Iterator[String]): Int =
-    val stanzas = IArray.from(lines.mkString("\n").split("\n\n"))
+    val stanzas = lines.mkString("\n").isplit("\n\n")
     val shapes = stanzas.init.map: string =>
       val points = string.linesIterator.drop(1).toSeq.zipWithIndex.flatMap:
         case (line, y) =>
@@ -129,9 +129,9 @@ object Part1 extends Aoc[Int]:
     val shapeVariations = shapes.map(_.variations)
     val regions = stanzas.last.linesIterator
       .map: line =>
-        val Array(dimensionsString, countsString) = line.split(":")
-        val Array(width, height) = dimensionsString.split("x").map(_.toInt)
-        val countIndexPairs = countsString.trim.split(" ").map(_.toInt).zipWithIndex.filter(sth => sth._1 != 0).toList
+        val IArray(dimensionsString, countsString) = line.isplit(':')
+        val IArray(width, height) = dimensionsString.isplit('x').map(_.toInt)
+        val countIndexPairs = countsString.trim.isplit(' ').map(_.toInt).zipWithIndex.filter(sth => sth._1 != 0).toList
 
         Region(width, height, countIndexPairs)
     val fits = regions.toSeq.map: region =>

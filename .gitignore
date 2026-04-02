@@ -17,3 +17,6 @@ sbt-launch.jar
 
 # Scala
 *.scala.semanticdb
+
+# scala-cli
+.scala-build

@@ -68,7 +68,7 @@ object Part1 extends Aoc[Long]:
   def newJunctionBoxes(lines: Iterator[String]): Array[JunctionBox] =
     lines
       .map: line =>
-        val Array(x, y, z) = line.split(",").map(_.toInt)
+        val IArray(x, y, z) = line.isplit(',').map(_.toInt)
         JunctionBox(x, y, z)
       .toArray
 
