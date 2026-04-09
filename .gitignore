@@ -20,3 +20,6 @@ sbt-launch.jar
 
 # scala-cli
 .scala-build
+
+# Mac
+.DS_Store
